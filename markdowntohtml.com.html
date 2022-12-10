@@ -1,0 +1,458 @@
+<html><head><style>body {
+   color: black;
+}
+</style></head><body><p> % Déploiement de d&#39;une application J2EE sous linux/Tomcat/Postgres
+% Clémentine GRETHEN
+% Stage du 4/06/2022 au 20/07/2022</p>
+<h1 id="internship-report-2022-humanitarian-trip-in-india">Internship report 2022: humanitarian trip in India</h1>
+<h1 id="acknowledgements">Acknowledgements</h1>
+<p>Je tiens à remercier en premier lieu l&#39;association IDEP pour m&#39;avoir permis de réaliser
+ce stage. Et je tiens à souligner leur engagement et leur grande  implication dans l&#39;humanitaire en Inde.</p>
+<p>Je remercie particulièremebt <strong>Mr. Didier Cazes</strong>, secrétaire de l&#39;IDEP, pour nous avoir accompagné pour l&#39;organisation de notre misiion 
+mais aussi pour l&#39;aide qu&#39;il a apporté sur le terrain.</p>
+<p>Je tiens à remercier chaleureusement <strong>Mme. Ingrid Cazes</strong>, présidente de l&#39;IDEP pour avoir pris le temps de nous rencontrer lors de notre retour en France.</p>
+<h1 id="summary">Summary</h1>
+<p>This report details my summer internship in India as a volunteer for the IDEP Association. Our goal as to stay in the school 
+of the Orathur Village to help building separate latrines for girls. </p>
+<h1 id="introduction">Introduction</h1>
+<p>Dans le cadre de <strong>l&#39;UE stage</strong> du semestre 4 de la formation licence <strong>Science pour
+l&#39;Ingénieur parcours Informatique</strong>, j&#39;ai effectué un stage de 4 semaines au sein de la
+Direction des Services Informatique de la Mairie de Nouméa sous tutorat de Mr Adrien
+SALES, chef du Département Maintenance et Développement, et de Mr Téodor KNAPIK, maître
+de conférence en informatique à l&#39;Université de Nouvelle-Calédonie.</p>
+<p>Le SED étudie et assure la cohérence de l’évolution de l’ensemble du <strong>système d’information</strong>
+en conformité avec l’architecture technique. Au début de mon stage, le SED
+disposait d&#39;une application dépendant de certains logiciels. L&#39;objectif de mon stage
+était donc de m&#39;assurer que cette application puisse être exécutée avec les nouvelles
+version de ces logiciels</p>
+<p>Plus largement ce stage a été pour moi <strong>l&#39;opportunité</strong> de découvrir le métier de
+développeur et quelques aspects qui y sont reliés. J&#39;ai pu apprendre à me servir des
+outils Redmine, Subversion, Maven, PostgreSQL, Tomcat et git, le tout sous un environnement
+Linux. J&#39;ai ainsi pu approfondir mes connaissances en <strong>SQL</strong> et lignes de commandes Linux,
+mais aussi découvrir de nouveaux langages comme le markdown <strong>Pandoc</strong> et le <strong>LaTeX</strong> d&#39;ailleurs
+utilisé pour rédiger ce rapport.</p>
+<p>Au-delà de mes connaissances, ce stage m&#39;a aussi permis de mieux appréhender le monde
+professionnel, le travail en <strong>équipe</strong> et par-dessus tout le travail en entreprise.</p>
+<p>L’élaboration de ce rapport a pour principale source les différents enseignements tirés
+de  la  pratique  journalière  de  la  tâche  à  laquelle j’étais affecté. En  vue  de
+rendre  compte  de  manière  fidèle  et  réaliste  du  mois  passé  au  sein de la
+Direction des Services Informatique de la <strong>Mairie de Nouméa</strong>,  il  apparait  logique  de
+présenter  à  titre  préalable le  <strong>cadre du  stage</strong>  à  savoir ladite direction,  puis
+le <strong>contexte  du projet</strong>  et  enfin  les  différentes <strong>phases  de  réalisation</strong> de celui-ci.</p>
+<h1 id="le-cadre-du-stage">Le cadre du stage</h1>
+<h2 id="pr-sentation-g-n-rale-de-la-dsi">Présentation générale de la DSI</h2>
+<p>La <strong>Direction des Services Informatique</strong> de la Mairie de Nouméa se comporte comme toutes
+DSI. Sa mission telle qu&#39;elle est présenté sur le portail interne est de :</p>
+<blockquote>
+<p>&quot;Gérer et optimiser en permanence le système d’information de la
+Mairie et de ses établissements publics.</p>
+<p>Fixer et valider les grandes évolutions de l’informatique de la collectivité et
+anticiper les évolutions technologiques nécessaires.</p>
+<p>Évaluer et préconiser les investissements. Contrôler l’efficacité et la maîtrise des
+risques liés au système d’information.&quot;</p>
+</blockquote>
+<p>La DSI respecte différentes norme comme la <strong>N.E.I.G.E.</strong> (surtout utilisé par le SIG), nomenclature
+élaborée par différentes administrations locales, ainsi que la gouvernance <strong>COBIT</strong></p>
+<h2 id="structure-organisationnelles-et-effectifs">Structure organisationnelles et effectifs</h2>
+<p>Pour conduire ses mission la <strong>DSI</strong> est composée de 32 personnes (33 avec moi) et de 4
+entités, parmi lesquels on retrouve :</p>
+<ul>
+<li>Un pôle administratif</li>
+<li>3 services liés à l&#39;informatique :<ul>
+<li>le Service Etudes et Développements</li>
+<li>le Service Infrastructures et Exploitation</li>
+<li>le Service de l&#39;Information Géographique</li>
+</ul>
+</li>
+</ul>
+<p><img src="images/organigramme.PNG" alt="Organigramme de la DSI au 1er novembre 2015" title="Organigramme DSI 1er novembre 2015"></p>
+<p>Le <strong>SIG</strong> possède son propre secrétariat étroitement lié au pôle administratif de la DSI.
+En effet, le SIG est annexé en dehors de l&#39;hôtel de ville, localisation principale de la
+DSI</p>
+<p>\pagebreak</p>
+<h2 id="pr-sentation-du-service-que-j-ai-int-gr-">Présentation du service que j&#39;ai intégré</h2>
+<p>Pour ma part j&#39;ai intégré la DSI au <strong>Service Etudes et Développements</strong>.</p>
+<blockquote>
+<p>&quot;Ce service étudie et assure la cohérence de l’évolution de l’ensemble du système
+d’information en conformité avec l’architecture technique; il réalise la maîtrise
+d’œuvre et assiste la maîtrise d’ouvrage pour la définition des besoins et des solutions
+à installer; il développe des applicatifs, intègre les données Internet et administre le
+portail d’entreprise.&quot;</p>
+</blockquote>
+<p>Le SED est divisé en 2 départements : le <strong>Département Etudes</strong> et le <strong>Département Maintenance et Développement</strong>,
+dirigé par Adrien SALES (mon maître de stage) et au sein duquel j&#39;ai travaillé.</p>
+<p>L&#39;agencement du service fût réorganisé en 2015 sur le modèle de l&#39;open-space, facilitant
+ainsi la communication et l&#39;échange pour l&#39;ensemble de ses membres. L&#39;équipe peut aussi
+compter sur des outils tel que <strong>Redmine</strong> et <strong>Subversion</strong> afin de coordonner le travail
+et les actions à effectuer.</p>
+<p>La découverte de ces éléments dans le cadre de mon projet m&#39;a été extrêmement bénéfique
+en terme de connaissance techniques, organisationnelles, relationnelles et
+professionnelles.</p>
+<h1 id="le-contexte-du-projet">Le contexte du projet</h1>
+<h2 id="le-contexte">Le contexte</h2>
+<p>Le <strong>SED</strong> s&#39;occupe entre autres du développement et de la maintenance d&#39;applications
+destiné à la Mairie mais aussi à d&#39;autres administrations travaillant en collaboration
+avec la ville de Nouméa. C&#39;est le cas notamment de l&#39;application <strong>Accueil-CCAS</strong>, utilisé
+par le <strong>CCAS</strong> pour gérer les demandes aux guichets et ainsi permettre de générer des
+statistiques</p>
+<p>Pour l&#39;instant l&#39;application dépend de logiciels et environnements, comme Tomcat et
+Postgres mais aussi Java, et n&#39;a pas été testé avec les dernières versions de ces derniers.</p>
+<h2 id="les-objectifs-et-contraintes">Les objectifs et contraintes</h2>
+<p>Les objectifs du projet sont donc :</p>
+<ul>
+<li>Dans un premier temps de déployer l&#39;application en local sur mon poste, sur lequel devra
+être installé :<ul>
+<li><strong>Postgres</strong> pour la gestion de la base de données</li>
+<li><strong>Subversion</strong> pour récupérer la bonne version du code source de l&#39;application</li>
+<li><strong>Maven</strong> pour la compilation de l&#39;application</li>
+<li><strong>Tomcat</strong> pour accueillir l&#39;application</li>
+<li><strong>Open JDK</strong> pour exécuter l&#39;application et le cas échéant modifier son code source</li>
+</ul>
+</li>
+<li>Une fois la tache effectuer, rédiger le rapport ainsi que le slideshow dans un
+langage dérivé de <strong>markdown</strong> et les convertir à l&#39;aide de l&#39;outil <strong>pandoc</strong> :<ul>
+<li>En <strong>.pdf</strong> et <strong>.docx</strong> pour le rapport</li>
+<li>En <strong>.html</strong> utilisant le framework <strong>reveal.js</strong> pour le slideshow</li>
+</ul>
+</li>
+<li>Le tout sera effectué sous un environnement <strong>Linux</strong> en privilégiant les lignes de
+commandes à l&#39;interface graphique</li>
+</ul>
+<h2 id="les-outils-du-projet">Les outils du projet</h2>
+<p>Tous les outils utilisés dans le cadre du projet sont <strong>open source</strong>.</p>
+<h3 id="linux-mint">Linux Mint</h3>
+<p><strong>Linux Mint</strong> est une distribution Linux dérivé de <strong>Ubuntu</strong> et <strong>Debian</strong> dont le développement
+commençât en 2006. Elle en est aujourd&#39;hui à sa version 17.2 (nom de code <strong>Rafaela</strong> ) et
+c&#39;est aussi la version utilisé lors du stage.</p>
+<p>Linux Mint utilise un environnement Gnome dans son édition principale. Cependant c&#39;est
+l&#39;édition <strong>KDE</strong>, qui utilise donc un environnement KDE, qui a été choisi. Il s&#39;agira bien
+sur d&#39;une version <strong>64 bits</strong> afin d&#39;exploiter le plein potentiel des 4 Go de
+mémoire vive embarquée dans le poste de travail fourni.</p>
+<p><img src="images/linux.png" alt="Environnement KDE de Linux Mint 17" title="Linux Mint 17 KDE"></p>
+<h3 id="open-jdk">Open JDK</h3>
+<p><strong>Open JDK</strong> est la version open source de l&#39;environnement de développement <strong>Java</strong> de la société
+<strong>Oracle</strong>. Elle est officiellement soutenue par Oracle et en est donc à sa version 8, tout
+comme la version officielle disponible sur le site de la société.</p>
+<p>\pagebreak</p>
+<h3 id="redmine">Redmine</h3>
+<p><strong>Redmine</strong> est une application web de Bugtracking/gestion de projet basé sur le framework <strong>Ruby on Rails</strong>.
+Parmi ses nombreuses fonctionnalisées on peut citer :</p>
+<p>\ </p>
+<ul>
+<li>Gestion multi-projets</li>
+<li>Gestion fine des droits utilisateurs définis par des <strong>rôles</strong></li>
+<li>Gestion de groupes d&#39;utilisateurs</li>
+<li>Rapports de bogues (bugs), demandes d&#39;évolutions</li>
+<li>Personnalisation avancées des demandes (champs, flux, droits personnalisables)</li>
+<li><strong>Wiki</strong> multi-projets</li>
+<li>Forums multi-projets</li>
+<li>News accessibles par <strong>RSS / ATOM</strong></li>
+<li>Notifications par courriel (mail)</li>
+<li>Gestion de feuilles de route, <strong>GANTT</strong>, calendrier</li>
+<li>Saisie du temps passé (sans possibilité de modifier une saisie antérieure)</li>
+<li><strong>Historique</strong></li>
+<li>Identification possible via <strong>LDAP, OpenID et CAS</strong> </li>
+</ul>
+<p>Redmine utilise la syntaxe <strong>Textile</strong> pour ses pages wiki ainsi que nombres de champs
+de saisie.</p>
+<p><img src="images/redmine.png" alt="Une nouvelle demande dans Redmine avec prévisualisation d&#39;exemple de balises Textile" title="Nouvelle demande Redmine"></p>
+<h3 id="subversion">Subversion</h3>
+<p><strong>Subversion</strong> est un logiciel de <strong>gestion de versions</strong>, distribué sous licence <strong>Apache</strong> (depuis 2010) et donc
+open source. Il fonctionne sur le mode client-serveur :</p>
+<ul>
+<li>Un serveur centralisé où se situent les fichiers constituant la <strong>référence</strong> (le &quot;dépôt&quot;)</li>
+<li>Des postes clients sur lesquels se trouvent les fichiers recopiés depuis le serveur
+et éventuellement modifiés localement</li>
+</ul>
+<h3 id="maven">Maven</h3>
+<p><strong>Maven</strong> est un outil de build Java.
+Il est lui aussi sous licence Apache. Pour gérer la production, il obéit au schéma suivant :</p>
+<ul>
+<li>compile</li>
+<li>test</li>
+<li>package</li>
+<li>installe</li>
+<li>deploy</li>
+<li>...</li>
+</ul>
+<p>Pour chaque tâche les précédentes doivent avoir été exécutées, sauf si elles ont déjà été
+effectuées avec succès et qu&#39;aucun changement n&#39;a été fait dans le projet depuis. D&#39;autres
+tâches peuvent être ajoutées comme clean, site (crée un site <strong>wiki</strong> ), etc...</p>
+<h3 id="tomcat">Tomcat</h3>
+<p><strong>Tomcat</strong> est un <strong>serveur J2EE</strong> sous licence Apache. Tout comme Maven, il est issu du
+projet <strong>Jakarta</strong>. Tomcat a été écrit en Java et dispose donc de la portabilité
+inhérente au langage. Tomcat en est aujourd&#39;hui à sa version 8.0.28. Il a l&#39;avantage
+de disposer d&#39;une <strong>interface web</strong> pour l&#39;administration des applications déployées.</p>
+<p>\pagebreak</p>
+<p><img src="images/tomcat.jpg" alt="La page d&#39;accueil de l&#39;interface web de Tomcat" title="Interface web Tomcat"></p>
+<h3 id="potgresql">PotgreSQL</h3>
+<p><strong>PostgreSQL</strong> est un <strong>SGBD</strong> sous licence <strong>BSD</strong>, un autre projet libre comme Apache ou
+Linux. Dans sa distribution officielle, il ne dispose d&#39;aucune interface graphique et
+tout doit donc se faire en ligne de commandes (il existe cependant quelques <strong>GUI</strong> comme
+<strong>pgAdmin</strong> par exemple). La version 9.5 du logiciel vient d&#39;entrer dans sa phase de <strong>beta test</strong>,
+c&#39;est donc la version 9.4 que nous utiliserons ici.</p>
+<h3 id="pandoc">Pandoc</h3>
+<p><strong>Pandoc</strong> est un outil de <strong>conversion de documents</strong> s&#39;appuyant sur une version modifié du
+<strong>Markdown</strong> de John Gruber, un langage de <strong>balisage léger</strong>. Il permet de convertir ses
+fichier en une grande variété de format allant du .pdf au .docx en passant par le .html
+(Voir le <a href="http://cache.preserve.io/rcwzwc0s/assets/3ec3be049db301203fc6338efbcb0ef4.png">schéma complet</a>
+).</p>
+<p>Pandoc est aussi capable d&#39;interpréter du code <strong>HTML</strong> ou <strong>LaTeX</strong> même si celui-ci est contenu
+dans un fichier markdown. Il utilise d&#39;ailleurs le langage LaTeX pour la conversion en PDF.
+Parmi les autres fonctions utiles de Pandoc se trouve la création automatique d&#39;une <strong>table des matières</strong>.</p>
+<h3 id="github">GitHub</h3>
+<p>GitHub est un service web <strong>d&#39;hébergement</strong> et de gestion de développement de logiciels,
+utilisant le logiciel de gestion de versions <strong>Git</strong>. Ce site est développé en partie en 
+Ruby on Rails.</p>
+<h3 id="netbeans">NetBeans</h3>
+<p>NetBeans est une <strong>studio de développement</strong> créé par <strong>Sun</strong> (aujourd&#39;hui racheté par Oracle).
+NetBeans permet de développer en une multitude de langage comme Java, C++, HTML et
+beaucoup d&#39;autres en lui incluant des <strong>greffons</strong>. Il est par exemple utilisé dans le cadre
+du stage avec un greffon Markdown. Il gère la notion de <strong>projet</strong> et est compatible
+avec des outils de versionning comme <strong>Subversion</strong> ou bien <strong>Git</strong>. Cela en fait un outil
+<strong>polyvalent</strong> et très pratique</p>
+<h1 id="la-r-alisation-du-projet">La réalisation du projet</h1>
+<h2 id="installation-du-poste-de-travail">Installation du poste de travail</h2>
+<p>Dès mon premier jour au sein du <strong>SED</strong>, une unité centrale accompagné de périphériques et
+d&#39;un CD d&#39;installation du système d&#39;exploitation me fut présenté : j&#39;allais m&#39;occuper
+de l&#39;installation de mon poste de travail de A à Z. Les branchements et l&#39;installation
+de Linux Mint ne fut qu&#39;une (longue) formalité. On m&#39;a alors présenter à l&#39;outil <strong>Redmine</strong>
+d&#39;où j&#39;ai pu accéder à ma <strong>feuille de route</strong> ainsi qu&#39;à un wiki m&#39;expliquant la marche à
+suivre afin d&#39;installer correctement ma machine.</p>
+<h3 id="configuration-de-base">Configuration de base</h3>
+<p>La première étape fut <strong>l&#39;accès internet</strong> : en effet, il faut indiquer au système que
+l&#39;on se situe derrière un <strong>proxy</strong> et quels identifiants utiliser. Linux oblige, aucune
+interface graphique, tout se passe soit dans le <strong>shell</strong>, soit dans les fichiers système, soit
+les deux !</p>
+<p>Après avoir mis à jour le système, j&#39;ai modifié un fichier <strong>.bashrc</strong> afin d&#39;initialiser
+certaines <strong>variables</strong> système comme les différents <strong>PATH</strong> d&#39;applications (que l&#39;on précisera
+une fois les dites applications installées).</p>
+<p><img src="images/bashrc.png" alt="Le fichier .bashrc custom" title=".bashrc"></p>
+<p>\pagebreak </p>
+<h3 id="installation-de-java-postrgresql-subversion-git">Installation de java/postrgreSQL/subversion/git</h3>
+<p>L&#39;installation de ces programmes sous Linux n&#39;a rien de compliqué, un simple</p>
+<pre><code>sudo apt-<span class="hljs-keyword">get</span> install MonProgramme[<span class="hljs-built_in">version</span>]
+</code></pre><p>Et le tour est joué. Seulement voilà, comme il me faut les toutes dernières versions,
+elles ne sont pas systématiquement disponible dans le <strong>dépôt officiel</strong> de la distribution.
+Il faut donc ajouter un dépôt pour pouvoir les installer. Je entre alors la ligne de commande</p>
+<pre><code>sudo -E<span class="hljs-built_in"> add-apt-repository </span>ppa:&lt;user&gt;/&lt;ppa-name&gt;
+</code></pre><h3 id="installation-de-maven">Installation de maven</h3>
+<p>OpenJDK 1.8 et PostgreSQL 9.4 s&#39;installent sans problème mais c&#39;est un peu plus compliqué
+pour maven. Il faut appeler les commandes suivantes :</p>
+<pre><code>export MVN_VERSION=<span class="hljs-number">3.3</span>.<span class="hljs-number">1</span>
+wget http:<span class="hljs-comment">//mirror.lagoon.nc/pub/apache/maven/maven-3/3.2.5/binaries/apache-maven-${MVN_VERSION}-bin.tar.gz</span>
+ls -la apache-maven-${MVN_VERSION}-bin<span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span>
+sudo cp apache-maven-${MVN_VERSION}-bin<span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span> /opt/
+cd /opt
+sudo tar xvzf apache-maven-${MVN_VERSION}-bin<span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span>
+sudo rm apache-maven-${MVN_VERSION}-bin<span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span>
+sudo rm -f maven
+sudo ln -s apache-maven-${MVN_VERSION} maven
+</code></pre><p>Maven est maintenant installé dans le dossier /opt de la machine. Cependant impossible
+de l&#39;utiliser, il ne peut pas se connecter à internet et donc récupérer les paquets.
+Il faut donc créé le fichier <strong>~/.m2.settings.xml</strong> qui aura le contenu ci-dessous :</p>
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">settings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">proxies</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">proxy</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">active</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">active</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">host</span>&gt;</span>proxyweb.site-mairie.noumea.nc<span class="hljs-tag">&lt;/<span class="hljs-name">host</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>3128<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>LOGIN<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>XXXXXX<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nonProxyHosts</span>&gt;</span>www.google.com|*.somewhere.com *dvlp*<span class="hljs-tag">&lt;/<span class="hljs-name">nonProxyHosts</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">proxy</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">proxies</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">servers</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>svn.ville-noumea.nc<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>LOGIN<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>XXXXXX<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">servers</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">settings</span>&gt;</span>
+</code></pre><h3 id="installation-de-tomcat">Installation de Tomcat</h3>
+<p>Ici rien de plus simple, je télécharge <strong>l&#39;archive</strong> de la version voulu, ici Tomcat 7, et la
+décompresse dans le dossier de mon choix, sans oublier d&#39;aller préciser le chemin
+dans le fichier .bashrc. Je veux maintenant que PostgreSQL et Tomcat <strong>communique</strong>, je copie
+donc le <strong>driver jdbc</strong> correspondant dans le dossier <strong>lib</strong> de Tomcat.
+Je mets ensuite à jour le <strong>contexte</strong> et insère ceci au fichier <strong>server.xml</strong></p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Realm</span>   <span class="hljs-attr">className</span>=<span class="hljs-string">"org.apache.catalina.realm.JNDIRealm"</span> 
+        <span class="hljs-attr">connectionURL</span>=<span class="hljs-string">"ldap://XXX.site-mairie.noumea.nc:389"</span> 
+        <span class="hljs-attr">alternateURL</span>=<span class="hljs-string">"ldap://XXX.site-mairie.noumea.nc:389"</span> 
+        <span class="hljs-attr">connectionName</span>=<span class="hljs-string">"XXX@site-mairie.noumea.nc"</span> 
+        <span class="hljs-attr">connectionPassword</span>=<span class="hljs-string">"*****"</span> 
+        <span class="hljs-attr">userBase</span>=<span class="hljs-string">"ou=Z-Users,dc=site-mairie,dc=noumea,dc=nc"</span> 
+        <span class="hljs-attr">userSubtree</span>=<span class="hljs-string">"true"</span> 
+        <span class="hljs-attr">userSearch</span>=<span class="hljs-string">"(sAMAccountName=</span></span></span><span class="hljs-template-variable">{0}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">)"</span> 
+        <span class="hljs-attr">roleBase</span>=<span class="hljs-string">"dc=site-mairie,dc=noumea,dc=nc"</span> 
+        <span class="hljs-attr">roleName</span>=<span class="hljs-string">"name"</span> 
+        <span class="hljs-attr">roleSubtree</span>=<span class="hljs-string">"true"</span> 
+        <span class="hljs-attr">roleSearch</span>=<span class="hljs-string">"(member=</span></span></span><span class="hljs-template-variable">{0}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">)"</span> 
+        <span class="hljs-attr">referrals</span>=<span class="hljs-string">"follow"</span> 
+        /&gt;</span></span>
+</code></pre><p><img src="images/context.png" alt="Le fichier context.xml" title="context.xml"></p>
+<p>\pagebreak</p>
+<h3 id="installation-de-netbeans">Installation de NetBeans</h3>
+<p>Tout comme Tomcat, il suffit de télécharger l&#39;archive de la version désiré et de
+la décompresser ou on le souhaite. Mais comme Tomcat il va falloir également
+changer quelques <strong>paramètres</strong> dans les fichiers. NetBeans ne se lancera pas s&#39;il
+ne trouve pas l&#39;environnement java. En effet il est développé dans ce langage et
+en a donc besoin pour se lancer. On lui indique alors le chemin d&#39;installation de
+java dans son fichier conf situé dans le dossier <strong>etc</strong>, à la ligne <strong>netbeans_jdkhome</strong>.
+On peut maintenant le lancer correctement en lançant le shell correspondant.</p>
+<h2 id="d-ployer-l-application">Déployer l&#39;application</h2>
+<p>Maintenant que l&#39;environnement de travail est installé et configuré, je vais pouvoir
+<strong>déployer</strong> l&#39;application et la <strong>tester</strong></p>
+<h3 id="cloner-la-base-de-donn-es-en-local">Cloner la base de données en local</h3>
+<p>Pour commencer, il faut <strong>cloner</strong> la base de données utilisée par l&#39;application.
+Je procède donc à un <strong>pg_dump</strong> de la base original situé sur un serveur, suivi d&#39;un
+<strong>pg_restore</strong> sur le serveur local (PostgreSQL). Voici les commandes utilisées</p>
+<pre><code><span class="hljs-comment">pg_dump</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">file</span>  <span class="hljs-comment">/tmp/accueilccas_dump</span><span class="hljs-string">.</span><span class="hljs-comment">sql</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">clean</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">schema=ccas_adm</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">dbname=ccas</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">host=host</span><span class="hljs-string">.</span><span class="hljs-comment">site</span><span class="hljs-literal">-</span><span class="hljs-comment">mairie</span><span class="hljs-string">.</span><span class="hljs-comment">noumea</span><span class="hljs-string">.</span><span class="hljs-comment">nc</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">username=ccas_read</span>
+<span class="hljs-comment">su</span> <span class="hljs-literal">-</span> <span class="hljs-comment">postgres</span>
+<span class="hljs-comment">psql</span> <span class="hljs-comment">ccas</span> &lt; <span class="hljs-comment">/tmp/accueilccas_dump</span><span class="hljs-string">.</span><span class="hljs-comment">sql</span>
+</code></pre><h3 id="r-cup-rer-les-sources-et-compiler">Récupérer les sources et compiler</h3>
+<p>Une fois cette opération effectué, il faut récupérer l&#39;application et la <strong>compiler</strong>.
+J&#39;utilise pour ça la partie <strong>client</strong> de Subversion afin de contacter le serveur sur
+lequel sont situées les différentes versions grâce à un</p>
+<pre><code>svn checkout <span class="hljs-tag">&lt;<span class="hljs-name">adresse_serveur</span>&gt;</span>
+</code></pre><p>Je me place ensuite dans le répertoire où se trouve les <strong>sources</strong>, choisis la bonne version
+(en l&#39;occurrence la 1.0) et exécute les commandes <strong>mvn package</strong> et <strong>mvn site</strong> afin de créer
+un site wiki de l&#39;application, ainsi que le <strong>.war</strong></p>
+<h3 id="d-ployer-l-application-sur-le-serveur-tomcat">Déployer l&#39;application sur le serveur Tomcat</h3>
+<p>Pour cela il suffit juste de déplacer le <strong>.war</strong> créé dans le répertoire <strong>webapps</strong> de tomcat
+et l&#39;application se déploie automatiquement. Cependant cette étapes m&#39;a causé quelques
+souci notamment due à l&#39;accès à l&#39;interface rendu impossible par l&#39;utilisation du <strong>realm</strong>
+custom et par un problème de compatibilité du <strong>domaine d&#39;authentification</strong> utilisé par
+l&#39;application avec <strong>Tomcat 8</strong> (donc ne venant pas de l&#39;application elle-même).</p>
+<p>Mais avant cela il faut bien sûr s&#39;assurer que le serveur est bien lancé en exécutant
+le fichier startup.sh situé dans le répertoire bin du dossier d&#39;installation de Tomcat.</p>
+<h3 id="d-ployer-les-rapports-birt">Déployer les rapports BIRT</h3>
+<p>Pour la gestion des stats, l&#39;application utilise <strong>BirtViewer</strong> qui doit donc être déployé de la même
+façon que <strong>Accueil-CCAS</strong>, c&#39;est à dire en plaçant le war dans <strong>webapps</strong>. Je copie alors
+les rapports situé dans le répertoire <strong>src/main/webapp/rapports</strong> de Accueil-CCAS, les colles
+dans le dossier <strong>birt</strong> et les tests.</p>
+<h2 id="phase-de-test">Phase de test</h2>
+<p>L&#39;application est maintenant <strong>déployé</strong> mais petit problème, impossible de se connecter
+pour tester ses fonctions. C&#39;est tout à fait normal</p>
+<h3 id="la-connexion">La connexion</h3>
+<p>Pour tester la connexion à l&#39;application, il a fallu ajouter une entrée avec mon
+identifiant à la table <strong>puser</strong> de la base de donnée. En effet, l&#39;application récupère
+les identifiants dans cette table, fait le lien avec le <strong>serveur d&#39;authentification</strong> pour
+les mots de passe et vérifie que tout est correct pour accepter ou refuser la connexion
+le cas échéant. J&#39;utiliser les commandes suivantes :</p>
+<pre><code>su - postgres
+psql -d ccas -U ccas_usr
+<span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> puser(login, css, <span class="hljs-keyword">admin</span>, <span class="hljs-keyword">visible</span>) <span class="hljs-keyword">values</span> (<span class="hljs-string">'#mon_login'</span>, <span class="hljs-string">'Blue'</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+</code></pre><p><img src="images/appli.png" alt="La page d&#39;accueil de l&#39;application" title="Accueil-CCAS"></p>
+<p>\pagebreak</p>
+<h3 id="tester-les-fonctionnalit-s">Tester les fonctionnalités</h3>
+<p>Maintenant que l&#39;on peut se connecter, il faut tester les différentes <strong>fonctionnalités</strong>
+de l&#39;application comme la saisie de dossier, l&#39;affichage des <strong>statistiques</strong> de la journée
+les statistiques générales et bien sûr <strong>l&#39;administration</strong>.</p>
+<p>Lors des tests, j&#39;ai pu remarquer que les dates à rentrer pour l&#39;affichage des rapports Birt
+devait être au <strong>format US</strong> (MM/DD/YYYY), chose qu&#39;il faudrait préciser à l&#39;utilisateur.</p>
+<p>Autres problème : l&#39;option de changement de <strong>thème</strong> présente sur le site ne fonctionne
+que pour la page en cours et revient à l&#39;option stocker dans la BDD lors d&#39;un
+changement de page. Cela doit être dû à un problème d&#39;accès à la base de données
+pour modification de la valeur correspondante. Cette modification n&#39;est pour l&#39;instant
+possible qu&#39;à partir de l&#39;interface administrateur.</p>
+<p><img src="images/rapport.png" alt="Exemple d&#39;un rapport BIRT" title="rapport BIRT"></p>
+<h2 id="r-daction-du-rapport-et-de-la-pr-sentation">Rédaction du rapport et de la présentation</h2>
+<h3 id="d-p-t-sur-github">Dépôt sur GitHub</h3>
+<p>Avant toute chose il me faut créer deux <strong>dépôts</strong> sur GitHub : l&#39;un pour le <strong>rapport</strong>
+et l&#39;autre pour la <strong>présentation</strong>. On travaillera maintenant en permanence avec
+cet outil ainsi que NetBeans pour les récupérations, les modifications en local et les envois.</p>
+<h3 id="le-rapport">Le rapport</h3>
+<p>Maintenant que l&#39;application est testée, je peux passer à la deuxième
+partie de mon rapport : sa <strong>rédaction</strong>. En effet la rédaction de ce rapport fait partie
+intégrante du projet car elle est l&#39;occasion de découvrir un <strong>markdown</strong> particulier
+utilisé par Pandoc afin de comprendre les mécanismes utilisés lors de la <strong>conversion</strong>. Voici la commande entrée pour lancer cette dernière :</p>
+<pre><code>pandoc rapport.md -o rapport.pdf -V <span class="hljs-attr">fontsize=12pt</span> -V <span class="hljs-attr">linestretch=1</span> -V <span class="hljs-attr">linkcolor=black</span> --number-sections --table-of-contents -V <span class="hljs-attr">documentclass=scrreprt</span> -V <span class="hljs-attr">lang=french</span>
+</code></pre><ul>
+<li>rapport.md est le fichier à convertir</li>
+<li>-o précise <em>l&#39;output</em> (rapport.pdf ici)</li>
+<li>-V permet de préciser divers paramètres :<ul>
+<li>fontsize pour la taille de police (12pts comme demandé)</li>
+<li>linestretch pour l&#39;interligne simple</li>
+<li>linkcolor précise la couleur des liens interne au documents</li>
+<li>documentclass précise une classe pour la mise en page</li>
+<li>lang permet de changer la langue du document, et donc d&#39;afficher &quot;Table des matières&quot;
+au lieu de &quot;Contents&quot;</li>
+</ul>
+</li>
+<li>-table-of-contents génère automatiquement une table des matières</li>
+<li>-number-section numérote toutes les sections et pas seulement les chapitres</li>
+</ul>
+<h3 id="la-pr-sentation">La présentation</h3>
+<p>Pour la présentation, la rédaction se fera toujours en <strong>mardown</strong> mais on utilisera un format
+<strong>HTML</strong> utilisant le <strong>framework</strong> reveal.js. Celui-ci offre l&#39;avantage d&#39;être <strong> <em>responsive</em> </strong>
+et donc d&#39;être lu depuis n&#39;importe quel support disposant d&#39;un interpréteur HTML.
+La présentation n&#39;est, à l&#39;heure actuelle, toujours pas <strong>finalisée</strong> et sera présenté de
+toute façon lors de la <strong>soutenance</strong>.</p>
+<h2 id="conclusion-du-projet">Conclusion du projet</h2>
+<p>Ce projet s&#39;est dans l&#39;ensemble bien déroulés, malgré une tendance à <strong>&quot;l&#39;improvisation&quot;</strong>
+m&#39;ayant valu quelques souci lors du déploiement de l&#39;application. Même si toutes les tache
+qui m&#39;ont été attribué ont pu être effectué à <strong>temps</strong>, sa gestion fut quelque chose d&#39;assez
+délicat.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Ce stage a été assez <strong>constructif</strong> et m&#39;a permis de m&#39;ouvrir à de nouveau concept et outils.</p>
+<p>En effet, intégrer une grande structure m&#39;a appris à plus compter sur le <strong>travail d&#39;équipe</strong>
+et à ne pas hésiter à demander de l&#39;aide. J&#39;ai pu découvrir de nombreux <strong>outils</strong> et me
+perfectionner dans l&#39;utilisation de beaucoup d&#39;autre, <strong>Linux</strong> en tête. La découverte
+de <strong>pandoc</strong> restera la plus marquante, de même que <strong>reveal.js</strong> que je privilégierais à
+l&#39;avenir</p>
+<p>Il m&#39;a aussi appris à ne pas trop &quot;bidouiller&quot; et à suivre les instructions même
+en cas de pépin. En effet, cet aspect m&#39;a valu quelques <strong>remarques</strong> de mon superviseur
+afin de me <strong>recadrer</strong>. Je saurai faire de cet incident une expérience <strong>bénéfique</strong>
+et en prendrai leçon pour l&#39;avenir</p>
+<p>De nature <strong>timide</strong> j&#39;ai eu du mal à m&#39;intégrer à l&#39;équipe, mais je ne me suis à aucun
+moment senti mis à l&#39;écart et je suis convaincu qu&#39;avec un peu plus de temps à leur
+côté, je n&#39;aurai eu aucun souci à créer un <strong>lien fort</strong>. Ce même lien qui existe entre
+les différents membres de l&#39;équipe pouvait être senti fortement, malgré une
+communication rare due à l&#39;utilisation de l&#39;outil <strong>Redmine</strong> par lequel beaucoup
+d&#39;informations transitent.</p>
+<h1 id="r-f-rences-bibliographiques">Références bibliographiques</h1>
+<h2 id="pour-la-documentation">Pour la documentation</h2>
+<ul>
+<li><a href="http://fr.wikipedia.org">http://fr.wikipedia.org</a></li>
+<li><a href="http://pandoc.org/README.html">http://pandoc.org/README.html</a></li>
+<li>le wiki Redmine de la ville du SED</li>
+<li><a href="http://www.postgresql.org/docs/9.4/static/index.html">http://www.postgresql.org/docs/9.4/static/index.html</a></li>
+</ul>
+<h2 id="pour-la-solution-de-nombreuses-question">Pour la solution à de nombreuses question</h2>
+<ul>
+<li><a href="http://stackoverflow.com/">http://stackoverflow.com/</a></li>
+<li><a href="http://tex.stackexchange.com/">http://tex.stackexchange.com/</a></li>
+<li><a href="https://openclassrooms.com/">https://openclassrooms.com/</a></li>
+<li><a href="https://www.google.com/">https://www.google.com/</a></li>
+</ul>
+<h2 id="documents-utilis-s">Documents utilisés</h2>
+<ul>
+<li>Organigramme de la DSI au 1er novembre 2015</li>
+<li>Exemples de rapports de stages fournis par l&#39;université</li>
+</ul>
+<h1 id="glossaire">Glossaire</h1>
+<ul>
+<li>N.E.I.G.E. : Nomenclature d&#39;Echanges d&#39;Information GEographqiue, destinée à faciliter
+la saisie, la fourniture et l&#39;échange d&#39;information géographique numériques dans le but
+de constituer et d&#39;actualiser une base de données</li>
+<li>COBIT : Control OBjectives for Information and related Technology ou en français
+Objectifs de contrôle de l’Information et des Technologies Associées est un outil
+fédérateur qui permet d&#39;instaurer un langage commun pour parler de la gouvernance
+des systèmes d&#39;information tout en tentant d&#39;intégrer d&#39;autres référentiels tels que
+ISO 9000, ITIL, etc.</li>
+<li>CCAS :</li>
+<li>Wiki : application web qui permet la création, la modification et
+l&#39;illustration collaborative de pages à l&#39;intérieur d&#39;un site web</li>
+<li>Open source : logiciel dont le code source est en libre accès et redistribution</li>
+<li>SGBD : Système de Gestion de Base de Données</li>
+<li>Shell : Interface de ligne de commande des systèmes Unix</li>
+<li>Java EE : Java Entreprise Edition</li>
+<li>JDBC : Java DataBase Connectivity, interface permettant aux applications Java d&#39;accéder
+à des sources de données</li>
+<li>.war : Web application ARchive, un format particulier d&#39;archive  dérivé du .jar contenant une
+application web</li>
+</ul>
+</body></html>

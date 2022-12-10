@@ -1,0 +1,246 @@
+\documentclass[frenchb]{article}
+\documentclass[11pt, french]{report}
+\usepackage[french]{babel}
+\selectlanguage{french}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{float} 
+%Pour utilisation sous unix
+%\usepackage[utf8]{inputenc}
+%\usepackage[utf8x]{inputenc}
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{babel}
+
+\documentclass[frenchb]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+%Pour utilisation sous unix
+%\usepackage[utf8]{inputenc}
+%\usepackage[utf8x]{inputenc}
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{babel}
+\documentclass[frenchb]{article}
+\documentclass[11pt, french]{report}
+\usepackage[french]{babel}
+\selectlanguage{french}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{float} 
+%Pour utilisation sous unix
+%\usepackage[utf8]{inputenc}
+%\usepackage[utf8x]{inputenc}
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{babel}
+
+\begin{document}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=5cm]{inp_n7.png}
+\end{figure}
+
+\title{\vspace{4cm} \textbf{Internship report 2022: humanitarian trip in India }}
+\author{GRETHEN Clémentine \\ }
+\date{\vspace{7cm}Computer science - First year  \\
+2021-2022 }
+
+\maketitle
+
+\newpage
+\tableofcontents
+\listoffigures
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Acknowledgment}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+First, I would like to thank Didier Cazes,president of the Idep association, for giving us the opportunity to realise this humanitarian trip in India. His great commitment in India allowed us to take part in this incredible project.    
+
+Se
+
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+This report details my summer internship in India as a volunteer for the IDEP Association. Our goal as to stay in the school of the Orathur Village to help building separate latrines for girls. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Description of the internship }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The course of the trip }
+    Nous sommes rentrés en contact avec Mr Cazes en novembre 2021 afin de décrouvrir les causes et les projets de l'association IDEP. Nous nous sommes très rapidement dit que les valeurs de l'association correspondaient à notre vision du voyage humanitaire. Nousa vons donc décidé de suivre Mr Cazes et l'IDEP dans cette aventure.  
+
+\subsection{The realization of humanitarian actions }
+On implante la chaine de transmission passe-bas équivalente à la chaine de transmission sur fréquence porteuse réalisée précédemment.
+\begin{itemize}
+    \item Tracés des signaux générés sur les voies en phase et en quadrature
+    
+        \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (312).png}
+\caption{Tracés des signaux générés.}
+ \label{rep_im_ex1_2}
+\end{figure}
+    \item Densité spectrale de puissance de l'enveloppe complexe associée au signal modulé sur fréquence porteuse.
+    \item 
+     \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (313).png}
+\caption{DSP de l'enveloppe convexe.}
+ \label{rep_im_ex1_2}
+\end{figure}
+         \\  On a bien un seul pic pour l'enveloppe convexe: c'est cohérent avec le cours où $S_xe$(f)=4$S-x$+(f+$f_p$).
+
+    \item Tracé des constelllations en sortie du mapping et en sortie de l'échantillonneure pour différentes valeurs de $E_b$/$n_0$.
+    
+     \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (330).png}
+\caption{Constellation à 1dB: sortie de l'échantillonneur.}
+ \label{rep_im_ex1_2}
+\end{figure}
+ \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (316).png}
+\caption{Constellation à 6 db: sortie de l'échantillonneur.}
+ \label{rep_im_ex1_2}
+\end{figure}
+ \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (332).png}
+\caption{Constellation sortie du mapping.}
+ \label{rep_im_ex1_2}
+\end{figure}
+
+    On a deux images: une pour 1dB et l'autre pour 6 dB: on voit que sur l'une les couples de bit sont indiscernable mais pour l'autre, on voit  les $a_k$: 11,10,00,01. En sortie du mapping (3ème image) on voit la figure présente dans le cours.
+    \item TEB : comparaison avec celui sur fréquence porteuse.
+     \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (308).png}
+\caption{Ccomparaison des TEB.}
+ \label{rep_im_ex1_2}
+\end{figure}
+    \\Nous n'avons pas les mêmes TEB (d'une erreur sur le TEB) mais nous voyons que en  théorie nous devons avoir les mêmes (même avec la fréquence porteuse simulée) : cela prouve que le taux binaire obtenu pour une transmission est identique que l'on implante avec une fréquence porteuse ou un passe-bas équivalent.
+        
+\end{itemize}
+
+\section{Comparaison de modulation sur fréquence porteuse}
+
+Nous allons implanter quatre chaine de transmission: 4-ASK, QPSK,8-PSK,16-QAM.
+
+\subsubsection{Our life in the homestay }
+Il s'agirt d'implanter, d'analyser et de comparer les chains passe-bas équivalentes associées aux chaines de transmissions proposées dans l'étude théorique.
+\begin{itemize}
+    \item Tracé des constellations en sortie pour différentes valeurs de Eb/N0
+    \begin{itemize}
+        \item Pour QAM
+         \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (333).png}
+\caption{Constellation à 1dB.}
+ \label{rep_im_ex1_2}
+\end{figure}
+    \end{itemize}
+     \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (334).png}
+\caption{Constellation en sortie du mapping.}
+ \label{rep_im_ex1_2}
+\end{figure}
+\\ On voit bien les différents $a_k$ de la constellation 16-QAM hiérarchique sur la deuxième figure. La première est illisible
+        \item Pour PSK
+         \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (335).png}
+\caption{Constellation à 1 db: sortie de l'échantillonneur.}
+ \label{rep_im_ex1_2}
+\end{figure}
+ \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (336).png}
+\caption{Constellation à 6 db: sortie de l'échantillonneur.}
+ \label{rep_im_ex1_2}
+\end{figure}
+
+ \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (337).png}
+\caption{Constellation sortie du mapping.}
+ \label{rep_im_ex1_2}
+\end{figure}
+\\ On voit bien les différents $a_k$ de la constellation 8-PSK hiérarchique sur la deuxième figure. La première est illisible. La deuxième commence à adopter la forme triviale du 8-psk
+
+\item Pour ask
+  \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (338).png}
+\caption{Constellation 1dB.}
+ \label{rep_im_ex1_2}
+\end{figure}
+ \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (339).png}
+\caption{Constellation 6dB.}
+ \label{rep_im_ex1_2}
+\end{figure}
+ \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (340).png}
+\caption{Constellation sortie du mapping.}
+ \label{rep_im_ex1_2}
+\end{figure}
+ On voit bien les différents $a_k$ de la constellation 4-ASK hiérarchique sur la deuxième figure. La première est illisible. La deuxième commence à adopter la forme triviale du 4-ASK.
+    
+    \item Tracé du taux d'erreur binaire
+     \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (340).png}
+\caption{Constellation sortie du mapping.}
+ \label{rep_im_ex1_2}
+\end{figure}
+    
+\end{itemize}
+\subsubsection{Comparaison des chaines de transmission}
+ \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (341).png}
+\caption{TEB pour les 4 chaines implantées.}
+ \label{rep_im_ex1_2}
+\end{figure}
+\\ A TEB fixé, on regarde le rapport Eb/N0 pour les 4chaines implantées. On obtient que QPSK est plus efficace en puissance que 8-PSK elle-même plus efficace que 4-ASK.
+\begin{itemize}
+	\item Classement des chaines en termes d'efficacité de puissance
+    \item Densités spectrales de puissances des signaux émis et comparaison
+     \begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{Capture d’écran (342).png}
+\caption{DSP pour les 4 chaines implantées .}
+ \label{rep_im_ex1_2}
+\end{figure}
+   \\ Pour comparer les chaines on peut comparer B la largeur de fréquence: plus elle est grande moins la chaine est efficace spectralement.
+   $B_4ASK$>$B_QPSK$>$B-8PSK$>$B_16QAM$.
+   Donc la chaine la moins efficace spectralement est 4-ASK et la plus efficace est la 16-QAM.
+\end{itemize}
+
+
+    
+\section{Conclusion}
+Ce rapport m'a permis de comprendre le cours plus en profondeur, notamment sur la notion de porteuse et de passe-bas équivalent. J'ai aussi découvert le codage latex, ce qui m'a demandé un investissement supplémentaire.
+
+\centering
+\color{blue}\rule{300px}{20px}
+\color{gray}\sf\Huge{- \\N7  Consulting}
+
+
+
+\end{document} 
+
+\color{#F1F1EF}\rule{300px}{20px}\color{gray}\sf\Huge{-\\ N7 Consulting}
