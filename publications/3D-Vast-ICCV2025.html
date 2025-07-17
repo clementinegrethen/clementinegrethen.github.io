@@ -183,7 +183,7 @@ function copyTextToClipboard() {
       const scaleFactor = 1.0 / geometry.boundingBox.max.length();
       geometry.scale(scaleFactor, scaleFactor, scaleFactor);
 
-      const material = new THREE.PointsMaterial({ color: 0xcccccc, size: 0.01 });
+      const material = new THREE.PointsMaterial({ size: 0.01, vertexColors: true });
       model = new THREE.Points(geometry, material);
       scene.add(model);
       camera.position.set(0, 0, 2);
