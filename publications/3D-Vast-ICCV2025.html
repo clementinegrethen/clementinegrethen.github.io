@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><span class="highlight-text">StereoLunar Dataset</span> – ICCV 2025</title>
+  <title>StereoLunar Dataset – ICCV 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="../assets/icons/moon.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,10 +29,22 @@
       box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
     }
 
-    /* New style for highlighted text */
+    /* New style for highlighted text (blue) */
     .highlight-text {
       color: #007bff; /* Blue color */
       font-weight: bold; /* Make it bold */
+    }
+
+    /* New style for red text */
+    .highlight-text-red {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* New style for green text */
+    .highlight-text-green {
+      color: green;
+      font-weight: bold;
     }
   </style>
 
@@ -81,7 +93,7 @@
 </div>
 
 <div class="container mt-5 text-center">
-<h4 class="text-center"><strong>1st Contribution: <span class="highlight-text">StereoLunar Dataset</span> Overview</strong></h4>
+<h4 class="text-center"><strong><span class="highlight-text-red">1st Contribution</span>: StereoLunar Dataset Overview</strong></h4>
   <div class="text-center my-4">
     <img src="../images/lunarstereo.jpg" class="img-responsive" alt="Pipeline Diagram">
   </div>
@@ -93,7 +105,7 @@
 </div>
 
 <div class="container mt-5 text-center">
-  <h4 class="text-center"><strong>1st Contribution: <span class="highlight-text">StereoLunar Dataset</span> Examples</strong></h4>
+  <h4 class="text-center"><strong><span class="highlight-text-red">1st Contribution</span>: StereoLunar Dataset Examples</strong></h4>
   <p>Select a stereo pair to visualize some examples of the <span class="highlight-text">StereoLunar dataset</span> (2D image + 3D scene):</p>
 
  <div class="row justify-content-center g-4">
@@ -126,7 +138,7 @@
   <small class="text-muted">Click & Drag to rotate</small>
 </div>
 <div class="container mt-5 text-center">
-<h4 class="text-center"><strong>2nd Contribution: Improving Lunar Pose and Geometry Estimation</strong></h4>
+<h4 class="text-center"><strong><span class="highlight-text-green">2nd Contribution</span>: Improving Lunar Pose and Geometry Estimation</strong></h4>
   <div class="text-center my-4">
 
   </div>
@@ -151,8 +163,8 @@ Fine-tuning <span class="highlight-text">MASt3R</span> on our <span class="highl
       <button class="btn btn-primary w-100 mt-2 compare-button" onclick="loadPair(2, this)">View 3D</button>
     </div>
     <div class="col-md-3">
-      <img src="../images/pair3_left.jpg" class="img-fluid mb-1" alt="Left 3">
-      <img src="../images/pair3_right.jpg" class="img-fluid" alt="Right 3">
+      <img src="../images/im_01010.jpg" class="img-fluid mb-1" alt="Left 3">
+      <img src="../images/im_01011.jpg" class="img-fluid" alt="Right 3">
       <p class="mt-2">Pair 3</p>
       <button class="btn btn-primary w-100 mt-2 compare-button" onclick="loadPair(3, this)">View 3D</button>
     </div>
