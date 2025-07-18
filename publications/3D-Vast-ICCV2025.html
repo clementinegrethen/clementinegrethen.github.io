@@ -236,6 +236,7 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
     loadModel(sceneOurs, `../data/ours_pair${pairId}.ply`, m => modelOurs = m);
     loadModel(sceneMast3r, `../data/mast3r_pair${pairId}.ply`, m => modelMast3r = m);
   }
+  window.loadPair = loadPair; 
 
   function animate() {
     requestAnimationFrame(animate);
