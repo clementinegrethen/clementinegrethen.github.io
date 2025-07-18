@@ -167,21 +167,44 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
   let modelOurs = null, modelMast3r = null;
   let controlsOurs, controlsMast3r;
 
+  // Define a sequence of camera states for jerky movement
+  // pos: camera position, target: point camera looks at, fov: field of view for zoom
+  const keyframes = [
+    { pos: new THREE.Vector3(0, 0, 2.5), target: new THREE.Vector3(0, 0, 0), fov: 60 }, // Initial general view
+    { pos: new THREE.Vector3(0.5, 0.5, 1.0), target: new THREE.Vector3(0, 0, 0), fov: 50 }, // Zoom in, top-right
+    { pos: new THREE.Vector3(-0.5, 0.5, 0.5), target: new THREE.Vector3(0, 0, 0), fov: 40 }, // Deeper zoom, top-left
+    { pos: new THREE.Vector3(0.1, -0.2, -0.3), target: new THREE.Vector3(0, 0, 0), fov: 30 }, // Very close, "inside" view
+    { pos: new THREE.Vector3(-0.1, 0.2, 0.3), target: new THREE.Vector3(0, 0, 0), fov: 35 }, // Another "inside" view
+    { pos: new THREE.Vector3(3.0, -1.0, 3.0), target: new THREE.Vector3(0, 0, 0), fov: 75 }, // Far zoom out, bottom-right
+    { pos: new THREE.Vector3(-2.0, 1.5, -2.0), target: new THREE.Vector3(0, 0, 0), fov: 65 }, // Another distant view, top-left
+  ];
+
+  let currentKeyframeIndex = 0;
+  const transitionDuration = 3000; // 3 seconds per "saccade"
+  let lastTransitionTime = 0;
+
   function initViewer(container) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
-    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 1000);
-    camera.position.set(0, 0, 2.5); // Initial position for the camera, matching animation start
+    // Initialize camera with the first keyframe's properties
+    const camera = new THREE.PerspectiveCamera(keyframes[0].fov, container.clientWidth / container.clientHeight, 0.01, 1000);
+    camera.position.copy(keyframes[0].pos);
+    camera.lookAt(keyframes[0].target);
+
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
+
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; // Enable damping for smoother controls
+    controls.enableDamping = true; // Enable damping for smoother manual interaction
     controls.dampingFactor = 0.05;
     controls.screenSpacePanning = false;
-    controls.minDistance = 0.5; // Prevent camera from going inside the object
+    controls.minDistance = 0.1; // Allow going closer to the model
     controls.maxDistance = 10; // Max distance for orbit
+    controls.target.copy(keyframes[0].target); // Set initial controls target
+    controls.update(); // Update controls once after setting target
+
     return { scene, camera, renderer, controls };
   }
 
@@ -209,50 +232,34 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
   function animate() {
     requestAnimationFrame(animate);
 
-    const time = Date.now() * 0.0005; // Time in seconds for animation speed
+    const now = Date.now();
+    if (now - lastTransitionTime > transitionDuration) {
+      lastTransitionTime = now;
+      currentKeyframeIndex = (currentKeyframeIndex + 1) % keyframes.length;
+      const nextKeyframe = keyframes[currentKeyframeIndex];
 
-    // Camera animation parameters
-    const radius = 2.5; // Distance from center for camera orbit
-    const height_oscillation = 0.5; // How much camera moves up/down
-    const fov_oscillation = 5; // How much FOV changes (for zoom effect)
-
-    // Animate Our model and camera
-    if (modelOurs) {
-      // Model rotation
-      modelOurs.rotation.y += 0.003;
-
-      // Camera movement around the object
-      camOurs.position.x = Math.cos(time) * radius;
-      camOurs.position.z = Math.sin(time) * radius;
-      camOurs.position.y = Math.sin(time * 0.7) * height_oscillation; // Oscillate height
-
-      // Camera zoom (FOV)
-      camOurs.fov = 60 + Math.sin(time * 1.2) * fov_oscillation;
-      camOurs.updateProjectionMatrix();
-
-      // Make camera look at the origin (where the model is centered)
-      camOurs.lookAt(0, 0, 0);
+      // Apply the new keyframe state immediately (jerky) to both cameras
+      if (camOurs && controlsOurs) {
+        camOurs.position.copy(nextKeyframe.pos);
+        camOurs.fov = nextKeyframe.fov;
+        camOurs.lookAt(nextKeyframe.target); // Ensure camera looks at target
+        camOurs.updateProjectionMatrix(); // Important after changing FOV/aspect
+        controlsOurs.target.copy(nextKeyframe.target); // Update controls target for consistent manual interaction
+      }
+      if (camMast3r && controlsMast3r) {
+        camMast3r.position.copy(nextKeyframe.pos);
+        camMast3r.fov = nextKeyframe.fov;
+        camMast3r.lookAt(nextKeyframe.target);
+        camMast3r.updateProjectionMatrix();
+        controlsMast3r.target.copy(nextKeyframe.target);
+      }
     }
 
-    // Animate MASt3R model and camera (similar but slightly offset phase for variety)
-    if (modelMast3r) {
-      // Model rotation
-      modelMast3r.rotation.y += 0.003;
+    // Model rotation (continuous and synchronized)
+    if (modelOurs) modelOurs.rotation.y += 0.003;
+    if (modelMast3r) modelMast3r.rotation.y += 0.003;
 
-      // Camera movement around the object (offset by PI for different phase)
-      camMast3r.position.x = Math.cos(time + Math.PI) * radius;
-      camMast3r.position.z = Math.sin(time + Math.PI) * radius;
-      camMast3r.position.y = Math.sin(time * 0.7 + Math.PI) * height_oscillation;
-
-      // Camera zoom (FOV)
-      camMast3r.fov = 60 + Math.sin(time * 1.2 + Math.PI) * fov_oscillation;
-      camMast3r.updateProjectionMatrix();
-
-      // Make camera look at the origin
-      camMast3r.lookAt(0, 0, 0);
-    }
-
-    // Update OrbitControls for manual interaction (if user clicks and drags)
+    // Update OrbitControls for manual interaction (must be called every frame if damping is enabled)
     controlsOurs.update();
     controlsMast3r.update();
 
@@ -260,10 +267,11 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
     rendererMast3r.render(sceneMast3r, camMast3r);
   }
 
+  // Initialize viewers and start animation
   ({ scene: sceneOurs, camera: camOurs, renderer: rendererOurs, controls: controlsOurs } = initViewer(viewerOurs));
   ({ scene: sceneMast3r, camera: camMast3r, renderer: rendererMast3r, controls: controlsMast3r } = initViewer(viewerMast3r));
 
-  // Initial load
+  // Initial load of a pair
   loadPair(1);
   animate();
 </script>
