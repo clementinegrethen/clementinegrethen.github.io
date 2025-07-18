@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>StereoLunar Dataset – ICCV 2025</title>
+  <title><span class="highlight-text">StereoLunar Dataset</span> – ICCV 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="../assets/icons/moon.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,11 +22,17 @@
     .copy-button:hover { background-color: #0056b3; }
     #citation { font-family: monospace; background: #eee; padding: 10px; border-radius: 5px; }
 
-    /* New style for active pair button */
+    /* Style for active pair button */
     .btn-primary.active-pair {
       background-color: #28a745; /* Green */
       border-color: #28a745;
       box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+    }
+
+    /* New style for highlighted text */
+    .highlight-text {
+      color: #007bff; /* Blue color */
+      font-weight: bold; /* Make it bold */
     }
   </style>
 
@@ -35,7 +41,7 @@
 
 <section class="jumbotron text-center" id="banner">
   <div class="container">
-    <h2 class="jumbotron-heading">Adapting Stereo Vision From Objects to 3D Lunar Surface Reconstruction<br> with the StereoLunar Dataset</h2>
+    <h2 class="jumbotron-heading">Adapting <span class="highlight-text">Stereo Vision</span> From Objects to <span class="highlight-text">3D Lunar Surface Reconstruction</span><br> with the <span class="highlight-text">StereoLunar Dataset</span></h2>
 
     <div class="row justify-content-center mt-4">
       <div class="col-md-10">
@@ -70,12 +76,12 @@
 <div class="container mt-5 text-center">
 <h4 class="text-center"><strong>Abstract</strong></h4>
   <p style="text-align: justify; max-width: 900px; margin: 0 auto;">
-    Accurate 3D reconstruction of lunar surfaces is essential for space exploration. However, existing stereo vision reconstruction methods struggle in this context due to the Moon’s lack of texture, difficult lighting variations, and atypical orbital trajectories. State-of-the-art deep learning models, trained on human-scale datasets, have rarely been tested on planetary imagery and cannot be transferred directly to lunar conditions. To address this issue, we introduce LunarStereo, the first open dataset of photorealistic stereo image pairs of the Moon, simulated using ray tracing based on high-resolution topography and reflectance models. It covers diverse altitudes, lighting conditions, and viewing angles around the lunar South Pole, offering physically grounded supervision for 3D reconstruction tasks. Based on this dataset, we adapt the MASt3R model to the lunar domain through fine-tuning on LunarStereo. We validate our approach through extensive qualitative and quantitative experiments on both synthetic and real lunar data, evaluating 3D surface reconstruction and relative pose estimation. Our experiments show significant improvements over zero-shot baselines , demonstrating that our method can generalize to planetary-scale data when the training is properly adapted. This work provides the most realistic and physically grounded benchmark to date for lunar stereo 3D reconstruction, and paves the way for vision models capable of robust cross-scale generalization in extraterrestrial environments.
+    <span class="highlight-text">Accurate 3D reconstruction of lunar surfaces</span> is essential for space exploration. However, existing <span class="highlight-text">stereo vision</span> reconstruction methods struggle in this context due to the Moon’s lack of texture, difficult lighting variations, and atypical orbital trajectories. State-of-the-art deep learning models, trained on human-scale datasets, have rarely been tested on planetary imagery and cannot be transferred directly to lunar conditions. To address this issue, we introduce <span class="highlight-text">LunarStereo</span>, the first open dataset of photorealistic stereo image pairs of the Moon, simulated using ray tracing based on high-resolution topography and reflectance models. It covers diverse altitudes, lighting conditions, and viewing angles around the lunar South Pole, offering physically grounded supervision for 3D reconstruction tasks. Based on this dataset, we adapt the <span class="highlight-text">MASt3R model</span> to the lunar domain through fine-tuning on LunarStereo. We validate our approach through extensive qualitative and quantitative experiments on both synthetic and real lunar data, evaluating 3D surface reconstruction and relative pose estimation. Our experiments show significant improvements over zero-shot baselines , demonstrating that our method can generalize to planetary-scale data when the training is properly adapted. This work provides the most realistic and <span class="highlight-text">physically grounded benchmark</span> to date for lunar stereo 3D reconstruction, and paves the way for vision models capable of robust cross-scale generalization in extraterrestrial environments.
   </p>
 </div>
 
 <div class="container mt-5 text-center">
-<h4 class="text-center"><strong>1st Contribution: StereoLunar Dataset Overview</strong></h4>
+<h4 class="text-center"><strong>1st Contribution: <span class="highlight-text">StereoLunar Dataset</span> Overview</strong></h4>
   <div class="text-center my-4">
     <img src="../images/lunarstereo.jpg" class="img-responsive" alt="Pipeline Diagram">
   </div>
@@ -87,8 +93,8 @@
 </div>
 
 <div class="container mt-5 text-center">
-  <h4 class="text-center"><strong>1st Contribution: StereoLunar Dataset Examples</strong></h4>
-  <p>Select a stereo pair to visualize some examples of the StereoLunar dataset (2D image + 3D scene):</p>
+  <h4 class="text-center"><strong>1st Contribution: <span class="highlight-text">StereoLunar Dataset</span> Examples</strong></h4>
+  <p>Select a stereo pair to visualize some examples of the <span class="highlight-text">StereoLunar dataset</span> (2D image + 3D scene):</p>
 
  <div class="row justify-content-center g-4">
     <div class="col-md-3">
@@ -125,7 +131,7 @@
 
   </div>
   <p style="text-align: justify; max-width: 900px; margin: 0 auto;">
-Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in domain adaptation to extreme conditions, such as the highly untextured and repetitive lunar terrain.  </p>
+Fine-tuning <span class="highlight-text">MASt3R</span> on our <span class="highlight-text">StereoLunar dataset</span> leads to notable improvements in domain adaptation to extreme conditions, such as the highly untextured and repetitive lunar terrain.  </p>
 </div>
 <div class="container mt-5 text-center">
   <h4><strong>Compare Lunar 3D Reconstructions</strong></h4>
