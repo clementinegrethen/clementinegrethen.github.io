@@ -123,23 +123,26 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
 </div>
 <div class="container mt-5 text-center">
   <h4><strong>Compare Lunar 3D Reconstructions</strong></h4>
-  <p>Click on a stereo pair to compare <strong>Ours</strong> and <strong>MASt3R</strong> reconstructions:</p>
+  <p>Cliquez sur un bouton pour comparer les reconstructions <strong>Ours</strong> et <strong>MASt3R</strong> :</p>
 
   <div class="row justify-content-center">
-    <div class="col-md-3" onclick="loadPair(1)" style="cursor:pointer;">
+    <div class="col-md-3">
       <img src="../images/im_01066.jpg" class="img-fluid mb-1" alt="Left 1">
       <img src="../images/im_01067.jpg" class="img-fluid" alt="Right 1">
       <p class="mt-2">Pair 1</p>
+      <button class="btn btn-primary w-100 mt-2" onclick="loadPair(1)">View 3D</button>
     </div>
-    <div class="col-md-3" onclick="loadPair(2)" style="cursor:pointer;">
+    <div class="col-md-3">
       <img src="../images/im_00006.jpg" class="img-fluid mb-1" alt="Left 2">
       <img src="../images/im_00007.jpg" class="img-fluid" alt="Right 2">
       <p class="mt-2">Pair 2</p>
+      <button class="btn btn-primary w-100 mt-2" onclick="loadPair(2)">View 3D</button>
     </div>
-    <div class="col-md-3" onclick="loadPair(3)" style="cursor:pointer;">
+    <div class="col-md-3">
       <img src="../images/pair3_left.jpg" class="img-fluid mb-1" alt="Left 3">
       <img src="../images/pair3_right.jpg" class="img-fluid" alt="Right 3">
       <p class="mt-2">Pair 3</p>
+      <button class="btn btn-primary w-100 mt-2" onclick="loadPair(3)">View 3D</button>
     </div>
   </div>
 
@@ -219,6 +222,11 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
       const mesh = new THREE.Points(geometry, material);
       scene.add(mesh);
       onLoaded(mesh);
+    },
+    // Optional: Add onProgress and onError callbacks for better debugging
+    undefined, // onProgress
+    function (error) {
+        console.error('An error happened loading the PLY file:', error);
     });
   }
 
@@ -279,11 +287,7 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
 <div class="container mt-5">
   <h4>Citation</h4>
   <div id="citation">
-@inproceedings{Grethen2025StereoLunar,<br>
-&nbsp;&nbsp;title={Adapting Stereo Vision From Objects to 3D Lunar Surface Reconstruction with the StereoLunar Dataset},<br>
-&nbsp;&nbsp;author={Clémentine Grethen and Simone Gasparini and Géraldine Morin and Jérémy Lebreton and Lucas Marti and Manuel Sanchez-Gestido},<br>
-&nbsp;&nbsp;booktitle={Proceedings of the ICCV Workshop on From Street to Space},<br>
-&nbsp;&nbsp;year={2025}<br>
+@inproceedings{todo
 }
   </div>
   <div class="text-center mt-3">
