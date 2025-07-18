@@ -22,7 +22,7 @@
     .copy-button:hover { background-color: #0056b3; }
     #citation { font-family: monospace; background: #eee; padding: 10px; border-radius: 5px; }
 
-    /* Style for active pair button */
+    /* Style for active pair button (used for both comparison and dataset example sections) */
     .btn-primary.active-pair {
       background-color: #28a745; /* Green */
       border-color: #28a745;
@@ -53,7 +53,7 @@
 
 <section class="jumbotron text-center" id="banner">
   <div class="container">
-    <h2 class="jumbotron-heading">Adapting <span class="highlight-text">Stereo Vision</span> From Objects to <span class="highlight-text">3D Lunar Surface Reconstruction</span><br> with the <span class="highlight-text">StereoLunar Dataset</span></h2>
+    <h2 class="jumbotron-heading">Adapting <span class="highlight-text">Stereo Vision</span> From Objects to <span class="highlight-text">3D Lunar Surface Reconstruction</span><br> with the <span class="highlight-text">StereoLunar</span> Dataset</h2>
 
     <div class="row justify-content-center mt-4">
       <div class="col-md-10">
@@ -88,7 +88,7 @@
 <div class="container mt-5 text-center">
 <h4 class="text-center"><strong>Abstract</strong></h4>
   <p style="text-align: justify; max-width: 900px; margin: 0 auto;">
-    <span class="highlight-text">Accurate 3D reconstruction of lunar surfaces</span> is essential for space exploration. However, existing <span class="highlight-text">stereo vision</span> reconstruction methods struggle in this context due to the Moon’s lack of texture, difficult lighting variations, and atypical orbital trajectories. State-of-the-art deep learning models, trained on human-scale datasets, have rarely been tested on planetary imagery and cannot be transferred directly to lunar conditions. To address this issue, we introduce <span class="highlight-text">LunarStereo</span>, the first open dataset of photorealistic stereo image pairs of the Moon, simulated using ray tracing based on high-resolution topography and reflectance models. It covers diverse altitudes, lighting conditions, and viewing angles around the lunar South Pole, offering physically grounded supervision for 3D reconstruction tasks. Based on this dataset, we adapt the <span class="highlight-text">MASt3R model</span> to the lunar domain through fine-tuning on LunarStereo. We validate our approach through extensive qualitative and quantitative experiments on both synthetic and real lunar data, evaluating 3D surface reconstruction and relative pose estimation. Our experiments show significant improvements over zero-shot baselines , demonstrating that our method can generalize to planetary-scale data when the training is properly adapted. This work provides the most realistic and <span class="highlight-text">physically grounded benchmark</span> to date for lunar stereo 3D reconstruction, and paves the way for vision models capable of robust cross-scale generalization in extraterrestrial environments.
+    Accurate 3D reconstruction of lunar surfaces is essential for space exploration. However, existing stereo vision reconstruction methods struggle in this context due to the Moon’s lack of texture, difficult lighting variations, and atypical orbital trajectories. State-of-the-art deep learning models, trained on human-scale datasets, have rarely been tested on planetary imagery and cannot be transferred directly to lunar conditions. To address this issue, we introduce LunarStereo, the first open dataset of photorealistic stereo image pairs of the Moon, simulated using ray tracing based on high-resolution topography and reflectance models. It covers diverse altitudes, lighting conditions, and viewing angles around the lunar South Pole, offering physically grounded supervision for 3D reconstruction tasks. Based on this dataset, we adapt the MASt3R model to the lunar domain through fine-tuning on LunarStereo. We validate our approach through extensive qualitative and quantitative experiments on both synthetic and real lunar data, evaluating 3D surface reconstruction and relative pose estimation. Our experiments show significant improvements over zero-shot baselines , demonstrating that our method can generalize to planetary-scale data when the training is properly adapted. This work provides the most realistic and physically grounded benchmark to date for lunar stereo 3D reconstruction, and paves the way for vision models capable of robust cross-scale generalization in extraterrestrial environments.
   </p>
 </div>
 
@@ -113,7 +113,7 @@
       <div class="border p-2">
         <img src="../images/im_01192.jpg" class="img-fluid mb-2" alt="Pair 1 Left">
         <img src="../images/im_01193.jpg" class="img-fluid mb-2" alt="Pair 1 Right">
-        <button class="btn btn-primary w-100" onclick="loadScene('../data/pcd_combined_final_scaled.ply')">View 3D</button>
+        <button class="btn btn-primary w-100 first-contribution-button" onclick="loadSceneWithHighlight('../data/pcd_combined_final_scaled.ply', this)">View 3D</button>
       </div>
     </div>
 
@@ -121,7 +121,7 @@
       <div class="border p-2">
         <img src="../images/im_00540.jpg" class="img-fluid mb-2" alt="Pair 2 Left">
         <img src="../images/im_00541.jpg" class="img-fluid mb-2" alt="Pair 2 Right">
-        <button class="btn btn-primary w-100" onclick="loadScene('../data/scene.ply')">View 3D</button>
+        <button class="btn btn-primary w-100 first-contribution-button" onclick="loadSceneWithHighlight('../data/scene.ply', this)">View 3D</button>
       </div>
     </div>
 
@@ -129,7 +129,7 @@
       <div class="border p-2">
         <img src="../images/im_00364.jpg" class="img-fluid mb-2" alt="Pair 3 Left">
         <img src="../images/im_00365.jpg" class="img-fluid mb-2" alt="Pair 3 Right">
-        <button class="btn btn-primary w-100" onclick="loadScene('../data/zz.ply')">View 3D</button>
+        <button class="btn btn-primary w-100 first-contribution-button" onclick="loadSceneWithHighlight('../data/zz.ply', this)">View 3D</button>
       </div>
     </div>
   </div>
@@ -272,7 +272,7 @@ Fine-tuning <span class="highlight-text">MASt3R</span> on our <span class="highl
     loadModel(sceneOurs, `../data/ours_pair${pairId}.ply`, m => modelOurs = m);
     loadModel(sceneMast3r, `../data/mast3r_pair${pairId}.ply`, m => modelMast3r = m);
   }
-  window.loadPair = loadPair; // FIX: Make loadPair globally accessible
+  window.loadPair = loadPair; // Make loadPair globally accessible
 
   function animate() {
     requestAnimationFrame(animate);
@@ -316,7 +316,7 @@ Fine-tuning <span class="highlight-text">MASt3R</span> on our <span class="highl
   ({ scene: sceneOurs, camera: camOurs, renderer: rendererOurs, controls: controlsOurs } = initViewer(viewerOurs));
   ({ scene: sceneMast3r, camera: camMast3r, renderer: rendererMast3r, controls: controlsMast3r } = initViewer(viewerMast3r));
 
-  // Initial load of a pair, and activate the first button
+  // Initial load of a pair, and activate the first button in the comparison section
   loadPair(1, document.querySelector('.compare-button')); // Pass the first button initially
   animate();
 </script>
@@ -389,6 +389,23 @@ function copyTextToClipboard() {
     });
   }
 
+  // New function to handle loading scene and button highlighting for the 1st Contribution section
+  function loadSceneWithHighlight(plyFile, clickedButton) {
+      // Remove active class from all buttons in the 1st Contribution section
+      document.querySelectorAll('.first-contribution-button').forEach(button => {
+          button.classList.remove('active-pair');
+      });
+
+      // Add active class to the clicked button
+      if (clickedButton) {
+          clickedButton.classList.add('active-pair');
+      }
+
+      // Call the original loadScene function
+      loadScene(plyFile);
+  }
+
+
   function animate() {
     requestAnimationFrame(animate);
     if (model) {
@@ -400,7 +417,18 @@ function copyTextToClipboard() {
   }
 
   window.addEventListener('load', initViewer);
-  window.loadScene = loadScene; // Make it accessible from the onclick buttons
+  window.loadScene = loadScene; // Make it accessible from the onclick buttons (though loadSceneWithHighlight is now preferred)
+  window.loadSceneWithHighlight = loadSceneWithHighlight; // Make new function globally accessible
+
+  // Optional: Automatically activate the first button in the "1st Contribution" section on page load
+  window.addEventListener('load', () => {
+    const firstContButton = document.querySelector('.first-contribution-button');
+    if (firstContButton) {
+      // Simulate a click or directly call the function to activate it
+      loadSceneWithHighlight(firstContButton.onclick.toString().match(/'([^']+)'/)[1], firstContButton);
+    }
+  });
+
 </script>
 
 </body>
