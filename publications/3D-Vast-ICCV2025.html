@@ -26,7 +26,6 @@
 </head>
 <body>
 
-<!-- Banner Section -->
 <section class="jumbotron text-center" id="banner">
   <div class="container">
     <h2 class="jumbotron-heading">Adapting Stereo Vision From Objects to 3D Lunar Surface Reconstruction<br> with the StereoLunar Dataset</h2>
@@ -61,7 +60,6 @@
 </div>
 </section>
 
-<!-- Abstract -->
 <div class="container mt-5 text-center">
 <h4 class="text-center"><strong>Abstract</strong></h4>
   <p style="text-align: justify; max-width: 900px; margin: 0 auto;">
@@ -69,7 +67,6 @@
   </p>
 </div>
 
-<!-- Overview Figure -->
 <div class="container mt-5 text-center">
 <h4 class="text-center"><strong>1st contribution: StereoLunar dataset Overview</strong></h4>
   <div class="text-center my-4">
@@ -83,14 +80,11 @@
   </p>
 </div>
 
-<!-- Results (optional) -->
-<!-- Interactive Results -->
 <div class="container mt-5 text-center">
   <h4 class="text-center"><strong>1st contribution: StereoLunar dataset examples</strong></h4>
   <p>Select a stereo pair to visualize some examples of the StereoLunar dataset (2D image + 3D scene):</p>
 
  <div class="row justify-content-center g-4">
-    <!-- Pair 1 -->
     <div class="col-md-3">
       <div class="border p-2">
         <img src="../images/im_01192.jpg" class="img-fluid mb-2" alt="Pair 1 Left">
@@ -99,7 +93,6 @@
       </div>
     </div>
 
-    <!-- Pair 2 -->
     <div class="col-md-3">
       <div class="border p-2">
         <img src="../images/im_00540.jpg" class="img-fluid mb-2" alt="Pair 2 Left">
@@ -108,7 +101,6 @@
       </div>
     </div>
 
-    <!-- Pair 3 -->
     <div class="col-md-3">
       <div class="border p-2">
         <img src="../images/im_00364.jpg" class="img-fluid mb-2" alt="Pair 3 Left">
@@ -120,7 +112,6 @@
 
   <div id="viewer3d" class="mt-5" style="width: 100%; height: 500px; border: 1px solid #ccc;"></div>
 </div>
-<!-- Overview Figure -->
 <div class="container mt-5 text-center">
 <h4 class="text-center"><strong>2nd contribution: Improving Lunar pose and geometry estimation
 </strong></h4>
@@ -135,7 +126,6 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
   <p>Click on a stereo pair to compare <strong>Ours</strong> and <strong>MASt3R</strong> reconstructions:</p>
 
   <div class="row justify-content-center">
-    <!-- Example for 3 pairs -->
     <div class="col-md-3" onclick="loadPair(1)" style="cursor:pointer;">
       <img src="../images/im_01066.jpg" class="img-fluid mb-1" alt="Left 1">
       <img src="../images/im_01067.jpg" class="img-fluid" alt="Right 1">
@@ -153,7 +143,6 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
     </div>
   </div>
 
-  <!-- Viewers -->
   <div class="row mt-4">
     <div class="col-md-6">
       <h5>Ours</h5>
@@ -182,12 +171,17 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
     const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 1000);
-    camera.position.set(0, 0, 2);
+    camera.position.set(0, 0, 2.5); // Initial position for the camera, matching animation start
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
     const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // Enable damping for smoother controls
+    controls.dampingFactor = 0.05;
+    controls.screenSpacePanning = false;
+    controls.minDistance = 0.5; // Prevent camera from going inside the object
+    controls.maxDistance = 10; // Max distance for orbit
     return { scene, camera, renderer, controls };
   }
 
@@ -214,10 +208,54 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
 
   function animate() {
     requestAnimationFrame(animate);
-    if (modelOurs) modelOurs.rotation.y += 0.003;
-    if (modelMast3r) modelMast3r.rotation.y += 0.003;
+
+    const time = Date.now() * 0.0005; // Time in seconds for animation speed
+
+    // Camera animation parameters
+    const radius = 2.5; // Distance from center for camera orbit
+    const height_oscillation = 0.5; // How much camera moves up/down
+    const fov_oscillation = 5; // How much FOV changes (for zoom effect)
+
+    // Animate Our model and camera
+    if (modelOurs) {
+      // Model rotation
+      modelOurs.rotation.y += 0.003;
+
+      // Camera movement around the object
+      camOurs.position.x = Math.cos(time) * radius;
+      camOurs.position.z = Math.sin(time) * radius;
+      camOurs.position.y = Math.sin(time * 0.7) * height_oscillation; // Oscillate height
+
+      // Camera zoom (FOV)
+      camOurs.fov = 60 + Math.sin(time * 1.2) * fov_oscillation;
+      camOurs.updateProjectionMatrix();
+
+      // Make camera look at the origin (where the model is centered)
+      camOurs.lookAt(0, 0, 0);
+    }
+
+    // Animate MASt3R model and camera (similar but slightly offset phase for variety)
+    if (modelMast3r) {
+      // Model rotation
+      modelMast3r.rotation.y += 0.003;
+
+      // Camera movement around the object (offset by PI for different phase)
+      camMast3r.position.x = Math.cos(time + Math.PI) * radius;
+      camMast3r.position.z = Math.sin(time + Math.PI) * radius;
+      camMast3r.position.y = Math.sin(time * 0.7 + Math.PI) * height_oscillation;
+
+      // Camera zoom (FOV)
+      camMast3r.fov = 60 + Math.sin(time * 1.2 + Math.PI) * fov_oscillation;
+      camMast3r.updateProjectionMatrix();
+
+      // Make camera look at the origin
+      camMast3r.lookAt(0, 0, 0);
+    }
+
+    // Update OrbitControls for manual interaction (if user clicks and drags)
     controlsOurs.update();
     controlsMast3r.update();
+
     rendererOurs.render(sceneOurs, camOurs);
     rendererMast3r.render(sceneMast3r, camMast3r);
   }
@@ -230,7 +268,6 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
   animate();
 </script>
 
-<!-- Citation -->
 <div class="container mt-5">
   <h4>Citation</h4>
   <div id="citation">
@@ -246,7 +283,6 @@ Fine-tuning MASt3R on our StereoLunar dataset leads to notable improvements in d
   </div>
 </div>
 
-<!-- Script for copy -->
 <script>
 function copyTextToClipboard() {
   const text = document.getElementById('citation').innerText;
