@@ -118,7 +118,7 @@ p strong { color: var(--text); }
 
 /* Sliders */
 .compare-wrap { position: relative; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; user-select: none; }
-.compare-stage { position: relative; width: 100%; aspect-ratio: 16/9; background: #f0f0f0; overflow: hidden; touch-action: none; }
+.compare-stage { position: relative; width: 100%; aspect-ratio: 16/9; min-height: 480px; background: #f0f0f0; overflow: hidden; touch-action: none; }
 .compare-stage img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 .compare-stage .overlay { clip-path: inset(0 0 0 50%); }
 .compare-handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: white; box-shadow: 0 0 0 1px rgba(0,0,0,0.35); transform: translateX(-1.5px); cursor: ew-resize; }
@@ -147,10 +147,11 @@ p strong { color: var(--text); }
 }
 .viz-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  flex-wrap: nowrap;
   gap: 8px;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
 }
 .viz-group.student-group {
   flex-direction: column;
@@ -216,6 +217,7 @@ p strong { color: var(--text); }
 .tool-label {
   align-self: center;
   margin-right: 2px;
+  margin-bottom: 2px;
   font-size: 13px;
   font-weight: 700;
   color: var(--text-2);
@@ -266,6 +268,29 @@ p strong { color: var(--text); }
   border-radius: 999px;
   text-align: left;
   line-height: 1.2;
+}
+.tool-btn.student-card {
+  border-color: #1f2126;
+  color: #1f2126;
+  background: white;
+}
+.tool-btn.student-card:hover {
+  background: #f8fafc;
+  border-color: #111318;
+}
+.tool-btn.student-card.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: white;
+}
+.tool-btn.student-card.best {
+  border-color: #7c3aed;
+  color: #7c3aed;
+  background: white;
+}
+.tool-btn.student-card.best:hover {
+  background: #f5f3ff;
+  border-color: #7c3aed;
 }
 .student-line-1 {
   display: flex;
@@ -677,12 +702,14 @@ class PLYScene {
     const w = container.clientWidth, h = container.clientHeight;
     this.scene = new THREE.Scene(); this.scene.background = new THREE.Color(0xf0f0f0);
     this.camera = new THREE.PerspectiveCamera(45, w/h, 0.001, 100);
-    this.camera.position.set(1.2, 0.7, 1.6);
+    this.camera.position.set(0.72, 0.42, 0.92);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(w, h); this.renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true; this.controls.autoRotate = true; this.controls.autoRotateSpeed = 0.4;
+    this.controls.minDistance = 0.2;
+    this.controls.maxDistance = 3.0;
     this.points = null; this.loader = new PLYLoader();
     this.peer = null;
     new ResizeObserver(() => this.onResize()).observe(container);
@@ -697,8 +724,13 @@ class PLYScene {
       if (this.points) { this.scene.remove(this.points); this.points.geometry.dispose(); }
       geo.computeBoundingBox();
       const c = geo.boundingBox.getCenter(new THREE.Vector3()); geo.translate(-c.x, -c.y, -c.z);
-      const s = geo.boundingBox.getSize(new THREE.Vector3()).length(); geo.scale(1/s, 1/s, 1/s);
-      const mat = new THREE.PointsMaterial({ vertexColors: geo.attributes.color !== undefined, color: 0x888888, size: 0.004, sizeAttenuation: true });
+      const size = geo.boundingBox.getSize(new THREE.Vector3());
+      const scale = Math.max(size.x, size.y, size.z) || 1;
+      geo.scale(1 / scale, 1 / scale, 1 / scale);
+      this.controls.target.set(0, 0, 0);
+      this.camera.position.set(0.72, 0.42, 0.92);
+      this.camera.lookAt(0, 0, 0);
+      const mat = new THREE.PointsMaterial({ vertexColors: geo.attributes.color !== undefined, color: 0x888888, size: 0.015, sizeAttenuation: true });
       this.points = new THREE.Points(geo, mat); this.scene.add(this.points);
     });
   }
