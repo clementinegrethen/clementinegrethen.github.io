@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Geometric Foundation Model Distillation for Efficient Lunar 3D Reconstruction</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --text:    #1c2532;
@@ -23,26 +22,34 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
 body { 
-    background: var(--bg); 
-    color: var(--text); 
-    /* Remplacement par Helvetica / Arial pour copier l'image */
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-    /* Taille augmentée à 18.5px (était à 17px) */
-    font-size: 18.5px; 
-    line-height: 1.6; 
-    -webkit-font-smoothing: antialiased; 
-}.container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+  background: var(--bg); 
+  color: var(--text); 
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+  font-size: 18.5px; 
+  line-height: 1.6; 
+  -webkit-font-smoothing: antialiased; 
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
 header { padding: 60px 0 30px; text-align: center; }
-.venue { font-size: 14px; font-weight: 600; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
-h1 { font-size: clamp(26px, 4.6vw, 40px); font-weight: 700; line-height: 1.25; max-width: 880px; margin: 0 auto 28px; letter-spacing: -0.01em; }
-.authors { font-size: 22px; margin: 22px 0 8px; line-height: 1.6; }
-.authors a { color: var(--text); text-decoration: none; }
-.authors .missing { color: var(--accent-2); }
-.authors a { color: var(--text); text-decoration: none; }
+.venue { font-size: 1.5em; font-weight: bold; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 18px; text-align: center; }
+h1 { font-size: clamp(26px, 4.6vw, 40px); font-weight: 700; line-height: 1.25; max-width: 880px; margin: 0 auto 28px; letter-spacing: -0.01em; text-align: center; }
+
+/* --- Bloc des Auteurs (Liens colorés et cliquables) --- */
+.authors { font-size: 22px; margin: 22px 0 8px; line-height: 1.6; text-align: center; }
+.authors a { 
+  color: var(--accent); 
+  text-decoration: underline; 
+  font-weight: 500; 
+  transition: color 0.15s ease; 
+}
+.authors a:hover { color: var(--link-h); text-decoration: none; }
 .authors sup { font-size: 11px; color: var(--text-3); margin: 0 1px; }
-.affil { font-size: 16px; color: var(--text-3); margin-top: 6px; }
-.author-note { margin: 18px auto 0; max-width: 720px; font-size: 16px; color: var(--accent-2); padding: 10px 16px; background: #eef4fb; border: 1px solid #c7d6e8; border-radius: 6px; font-style: italic; }
+.affil { font-size: 16px; color: var(--text-3); margin-top: 6px; text-align: center; }
+
+.author-note { margin: 18px auto 0; max-width: 720px; font-size: 14px; color: var(--accent-2); padding: 10px 16px; background: #eef4fb; border: 1px solid #c7d6e8; border-radius: 6px; font-style: italic; text-align: center; }
 .links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .link-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--text); color: white; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 14px; transition: background 0.18s; }
 .link-btn:hover { background: var(--link-h); }
@@ -51,46 +58,19 @@ h1 { font-size: clamp(26px, 4.6vw, 40px); font-weight: 700; line-height: 1.25; m
 
 section { padding: 50px 0; border-top: 1px solid var(--border); }
 section:first-of-type { border-top: none; }
-h2 { font-size: 28px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.01em; }
-h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: var(--text); }
-p { color: var(--text-2); margin-bottom: 14px; max-width: 880px; }
+
+/* --- Alignement des titres de sections --- */
+h2 { font-size: 28px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.01em; text-align: left; color: var(--text); }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 12px; color: var(--text); text-align: left; }
+p { color: var(--text-2); margin-bottom: 14px; max-width: 880px; text-align: left; }
 p strong { color: var(--text); }
-body { 
-    background: var(--bg); 
-    color: var(--text); 
-    /* Remplacement par Helvetica / Arial pour copier l'image */
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-    /* Taille augmentée à 18.5px (était à 17px) */
-    font-size: 18.5px; 
-    line-height: 1.6; 
-    -webkit-font-smoothing: antialiased; 
-}
-  /* --- Section Remerciements --- */
-.acknowledgment-section {
-    background: var(--bg-soft);
-    border-left: 4px solid var(--accent-2);
-    border-radius: 4px;
-    padding: 24px 28px;
-    margin: 40px auto;
-    max-width: 880px;
-}
 
-.acknowledgment-section h2 {
-    font-size: 20px;
-    font-weight: 600;
-    text-align: left; /* Plus élégant aligné à gauche dans un encadré */
-    margin-bottom: 10px;
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.acknowledgment-section p {
-    font-size: 15px; /* Légèrement plus petit pour faire texte de bas de page */
-    line-height: 1.6;
-    color: var(--text-2);
-    margin-bottom: 0;
-    text-align: justify;
+/* --- Style de l'Abstract --- */
+.abstract p { 
+  text-align: justify; 
+  max-width: none; 
+  font-size: 18.5px; 
+  line-height: 1.5; 
 }
 
 .teaser-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 600px; margin: 36px auto 6px; }
@@ -120,10 +100,10 @@ body {
 .chip.best { border-color: var(--good); }
 .chip.best.active { background: var(--good); border-color: var(--good); }
 
-.arch-info { padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 18px; font-size: 14px; color: var(--text-2); }
+.arch-info { padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 18px; font-size: 14px; color: var(--text-2); text-align: left; }
 .arch-info strong { color: var(--text); }
 .arch-info ul { margin: 6px 0 0 24px; padding: 0; }
-.arch-info li { line-height: 1.7; }
+.arch-info li { line-height: 1.7; text-align: left; }
 
 /* Sliders */
 .compare-wrap { position: relative; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; user-select: none; }
@@ -141,9 +121,9 @@ body {
 
 .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
 .cmp-grid > div { margin: 0; }
-.cmp-title { font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+.cmp-title { font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; }
 .view-block { margin-top: 22px; }
-.view-block .view-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+.view-block .view-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 10px; text-align: left; }
 @media (max-width: 720px) { .cmp-grid { grid-template-columns: 1fr; } .pair-thumbs { grid-template-columns: 1fr 1fr; } }
 
 /* 3D Viewer */
@@ -160,12 +140,34 @@ td:first-child, th:first-child { text-align: left; font-weight: 500; }
 .tbl-best { color: var(--good); font-weight: 700; }
 .tbl-teacher { background: #fffaf0; color: var(--accent-2); font-style: italic; }
 
-.bibtex { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 6px; padding: 18px 22px; color: var(--text); white-space: pre-wrap; overflow-x: auto; }
+.bibtex { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 6px; padding: 18px 22px; color: var(--text); white-space: pre-wrap; overflow-x: auto; text-align: left; }
 .bibtex .k { color: var(--link); }
-footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-3); font-size: 13px; }
-  h1, h2, h3 {
-    text-align: center;
+
+/* --- Elegant Acknowledgements Box --- */
+.acknowledgment-section {
+  background: var(--bg-soft);
+  border-left: 4px solid var(--accent-2);
+  border-radius: 4px;
+  padding: 24px 28px;
+  margin: 40px 0;
 }
+.acknowledgment-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.acknowledgment-section p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-2);
+  margin-bottom: 0;
+  text-align: justify;
+}
+
+footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-3); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -173,11 +175,8 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
 <div class="container">
 
 <header>
-<div class="venue" style="font-size: 1.5em; font-weight: bold;">
-    IEEE European Conference on Computer Vision (ECCV 2026)
-</div>
-    <h1>Geometric Foundation Model Distillation<br>for Efficient Lunar 3D Reconstruction</h1>
-
+  <div class="venue">IEEE European Conference on Computer Vision (ECCV 2026)</div>
+  <h1>Geometric Foundation Model Distillation<br>for Efficient Lunar 3D Reconstruction</h1>
 
   <div class="authors">
     <a href="https://clementinegrethen.github.io/" target="_blank">Clémentine Grethen</a><sup>1</sup>,
@@ -216,7 +215,6 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
   </div>
 </section>
 
-<!-- STUDENT vs TEACHER -->
 <section>
   <h2>Student vs Teacher</h2>
   <p>Compare each student to the Teacher (688.6M ViT-Large) on both views of the stereo pair. The slider lets you reveal the student's prediction over the Teacher's.</p>
@@ -277,7 +275,6 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
   </div>
 </section>
 
-<!-- 3D STUDENT vs TEACHER -->
 <section>
   <h2>3D point cloud — Student vs Teacher</h2>
   <p>Side-by-side comparison of the reconstructed 3D point clouds. Drag either viewer to rotate both — rotations are synchronized. The cloud is textured with RGB sampled from the input image.</p>
@@ -293,7 +290,6 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
   </div>
 </section>
 
-<!-- ABLATION TRI-COMPARE -->
 <section>
   <h2>Training-component ablation</h2>
   <p>Three-way comparison: <strong>A (BEST)</strong> on the left, the selected variant in the middle, <strong>Teacher</strong> on the right. Slide the two handles to reveal each region.</p>
@@ -371,7 +367,6 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
   </div>
 </section>
 
-<!-- EXTENSION WORK -->
 <section>
   <h2>Extension to other domains</h2>
   <p>While the main paper focuses on lunar imagery, our framework transfers to general-purpose datasets without architectural changes — we distill the publicly released <strong>MASt3R</strong> checkpoint (no domain adaptation) and apply the same recipe.</p>
@@ -417,16 +412,14 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
 }</div>
 </section>
 
-</div>
-<div class="container">
-  <section class="acknowledgment-section">
-    <h2>Acknowledgements</h2>
-    <p>This work was supported by the French Agence Nationale de la Recherche (ANR, “Investissements d’avenir”, ANR-21-ESRE-0051) and the European Space Agency (ESA, contract 4000140461/23/NL/GLC/my).</p>
-  </section>
-</div>
-<footer>© 2026 — IRIT, University of Toulouse </footer>
+<section class="acknowledgment-section">
+  <h2>Acknowledgements</h2>
+  <p>This work was supported by the French Agence Nationale de la Recherche (ANR, “Investissements d’avenir”, ANR-21-ESRE-0051) and the European Space Agency (ESA, contract 4000140461/23/NL/GLC/my).</p>
+</section>
 
-<script type="importmap">
+<footer>© 2026 — IRIT, University of Toulouse · Airbus Defence and Space</footer>
+
+</div> <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
   "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
@@ -568,80 +561,6 @@ function refreshArchInfo() {
   const m = ARCH_META[CUR_ARCH];
   document.getElementById('arch-info').innerHTML = `<strong>${m.name}</strong> · ${m.params} params <ul>` + m.details.map(d => `<li>${d}</li>`).join('') + `</ul>`;
 }
-function refresh() {
-  if (!CUR_PAIR) return;
-  const base = pp();
-  // Hero
-  document.getElementById('hero-im1').src = `${base}/im1.jpg`;
-  document.getElementById('hero-im2').src = `${base}/im2.jpg`;
-  document.getElementById('hero-cap1').textContent = `Left · im_${CUR_PAIR.im1}`;
-  document.getElementById('hero-cap2').textContent = `Right · im_${CUR_PAIR.im2}`;
-  // Student vs Teacher (2 views × depth+slope)
-  const arch_file = ARCH_META[CUR_ARCH].file;
-  for (const v of ['1','2']) {
-    const vi = (parseInt(v)-1).toString();  // 0 or 1
-    document.getElementById(`v${v}-depth-base`).src    = `${base}/depth_v${vi}/Teacher.png`;
-    document.getElementById(`v${v}-depth-overlay`).src = `${base}/depth_v${vi}/${arch_file}.png`;
-    document.getElementById(`v${v}-slope-base`).src    = `${base}/slope_v${vi}/Teacher.png`;
-    document.getElementById(`v${v}-slope-overlay`).src = `${base}/slope_v${vi}/${arch_file}.png`;
-    document.getElementById(`v${v}-depth-right`).textContent = ARCH_META[CUR_ARCH].name.split('—')[0].trim();
-    document.getElementById(`v${v}-slope-right`).textContent = ARCH_META[CUR_ARCH].name.split('—')[0].trim();
-  }
-  // 3D PLY: Student vs Teacher
-  archScene_student.load(`${base}/ply/${arch_file}.ply`);
-  archScene_teacher.load(`${base}/ply/Teacher.ply`);
-  document.getElementById('ply-student-name').textContent = `· ${ARCH_META[CUR_ARCH].name.split('—')[0].trim()} · ${ARCH_META[CUR_ARCH].params}`;
-  // Ablation tri-compare (A | selected | Teacher)
-  for (const v of ['1','2']) {
-    const vi = (parseInt(v)-1).toString();
-    document.getElementById(`abl-v${v}-depth-A`).src = `${base}/abl_depth_v${vi}/A.png`;
-    document.getElementById(`abl-v${v}-depth-X`).src = `${base}/abl_depth_v${vi}/${CUR_ABL}.png`;
-    document.getElementById(`abl-v${v}-depth-T`).src = `${base}/depth_v${vi}/Teacher.png`;
-    document.getElementById(`abl-v${v}-slope-A`).src = `${base}/abl_slope_v${vi}/A.png`;
-    document.getElementById(`abl-v${v}-slope-X`).src = `${base}/abl_slope_v${vi}/${CUR_ABL}.png`;
-    document.getElementById(`abl-v${v}-slope-T`).src = `${base}/slope_v${vi}/Teacher.png`;
-    document.getElementById(`abl-v${v}-depth-mid`).textContent = ABL_LABELS[CUR_ABL];
-    document.getElementById(`abl-v${v}-slope-mid`).textContent = ABL_LABELS[CUR_ABL];
-  }
-  refreshArchInfo();
-}
-
-fetch('assets/pairs/manifest.json').then(r => r.json()).then(data => {
-  MANIFEST = data;
-  const picker = document.getElementById('pair-picker');
-  picker.innerHTML = '';
-  data.forEach((p, i) => {
-    const div = document.createElement('button');
-    div.className = 'pair-thumb' + (i === 0 ? ' active' : '');
-    div.dataset.key = p.id;
-    div.innerHTML = `
-      <div class="pair-thumb-imgs">
-        <img src="assets/pairs/${p.id}/im1.jpg" alt="">
-        <img src="assets/pairs/${p.id}/im2.jpg" alt="">
-      </div>
-      <div class="pair-thumb-name">${p.name}</div>
-      <div class="pair-thumb-detail">${p.detail}</div>
-    `;
-    div.addEventListener('click', () => {
-      CUR_PAIR = p;
-      document.querySelectorAll('.pair-thumb').forEach(b => b.classList.toggle('active', b.dataset.key === p.id));
-      refresh();
-    });
-    picker.appendChild(div);
-  });
-  document.querySelectorAll('.arch-btn').forEach(b => b.addEventListener('click', () => {
-    CUR_ARCH = b.dataset.key;
-    document.querySelectorAll('.arch-btn').forEach(x => x.classList.toggle('active', x.dataset.key === CUR_ARCH));
-    refresh();
-  }));
-  document.querySelectorAll('.abl-btn').forEach(b => b.addEventListener('click', () => {
-    CUR_ABL = b.dataset.key;
-    document.querySelectorAll('.abl-btn').forEach(x => x.classList.toggle('active', x.dataset.key === CUR_ABL));
-    refresh();
-  }));
-  CUR_PAIR = data[0]; refresh();
-});
 </script>
-
 </body>
 </html>
