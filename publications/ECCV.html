@@ -46,21 +46,950 @@ h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; line-height: 1.25; max
 /* --- Bloc des Auteurs --- */
 .authors { font-size: 20px; margin: 20px 0 8px; line-height: 1.6; text-align: center; }
 .authors a { 
-  color: var(--accent); 
-  text-decoration: underline; 
+  color: #2a9df4; 
+  text-decoration: none; 
   font-weight: 500; 
   transition: color 0.15s ease; 
 }
-.authors a:hover { color: var(--link-h); text-decoration: none; }
+.authors a:hover { color: #1177d1; text-decoration: none; }
 .authors sup { font-size: 11px; color: var(--text-3); margin: 0 1px; }
 .affil { font-size: 15px; color: var(--text-3); margin-top: 6px; text-align: center; }
 
 .author-note { margin: 20px auto 0; max-width: 720px; font-size: 14px; color: var(--text-2); padding: 12px 18px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; font-style: italic; text-align: left; }
-.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-.link-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--text); color: white; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 14px; transition: background 0.18s; }
-.link-btn:hover { background: var(--link-h); }
-.link-btn.outline { background: white; color: var(--text); border: 1px solid var(--border); }
-.link-btn.outline:hover { background: var(--bg-soft); border-color: var(--text); }
+.links { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 30px; }
+.link-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: #303238; color: #f3f4f6; border-radius: 999px; text-decoration: none; font-weight: 500; font-size: 15px; letter-spacing: 0.01em; border: 1px solid #303238; transition: all 0.18s ease; }
+.link-btn:hover { background: #1f2126; border-color: #1f2126; transform: translateY(-1px); }
+.link-btn.outline { background: #303238; color: #f3f4f6; border: 1px solid #303238; }
+.link-btn.outline:hover { background: #1f2126; border-color: #1f2126; }
+.link-icon { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; }
+.link-icon svg { width: 16px; height: 16px; display: block; fill: currentColor; }
+
+section { padding: 40px 0; border-top: 1px solid var(--border); }
+section:first-of-type { border-top: none; }
+
+/* --- Structure globale des textes (Style Abstract) --- */
+.section-intro-text {
+  max-width: 720px;
+  margin: 0 auto 24px;
+}
+.section-intro-text p {
+  color: var(--text-2);
+  font-size: 16.5px;
+  line-height: 1.6;
+  text-align: left; /* Plus de coupures bizarres dues au justify */
+  margin-bottom: 12px;
+}
+.section-intro-text p:last-child {
+  margin-bottom: 0;
+}
+.section-intro-text.center p {
+  text-align: center;
+}
+
+h2 { font-size: 24px; font-weight: 600; margin: 0 auto 16px; letter-spacing: -0.01em; text-align: center; color: var(--text); max-width: 720px; }
+h3 { font-size: 18px; font-weight: 600; margin: 28px auto 12px; color: var(--text); text-align: center; max-width: 720px; }
+p strong { color: var(--text); }
+
+/* --- Box Abstract --- */
+.abstract-box {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.abstract-box h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+.abstract-box p { 
+  text-align: justify; 
+  font-size: 16.5px; 
+  line-height: 1.6; 
+}
+
+/* Thumbnails et listes */
+.pair-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 16px; }
+.pair-thumb { background: var(--bg-card); border: 2px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.18s; padding: 0; font: inherit; text-align: left; }
+.pair-thumb:hover { border-color: var(--accent-2); transform: translateY(-3px); }
+.pair-thumb.active { border-color: var(--accent); box-shadow: 0 4px 18px rgba(30, 77, 139, 0.18); }
+.pair-thumb .pair-thumb-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+.pair-thumb .pair-thumb-imgs img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+.pair-thumb .pair-thumb-name { padding: 6px 10px; font-size: 12px; font-weight: 600; color: var(--text); border-top: 1px solid var(--border); }
+.pair-thumb .pair-thumb-detail { padding: 0 10px 6px; font-size: 11px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+
+/* Sliders */
+.compare-wrap { position: relative; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; user-select: none; }
+.compare-stage { position: relative; width: 100%; aspect-ratio: 16/9; background: #f0f0f0; overflow: hidden; }
+.compare-stage img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.compare-stage .overlay { clip-path: inset(0 0 0 50%); }
+.compare-handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: white; box-shadow: 0 0 0 1px rgba(0,0,0,0.35); transform: translateX(-1.5px); cursor: ew-resize; }
+.compare-handle::after { content: '⇆'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 36px; height: 36px; border-radius: 50%; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text); pointer-events: none; }
+.compare-label { position: absolute; top: 10px; padding: 4px 10px; background: rgba(0,0,0,0.7); color: white; font-size: 11px; font-weight: 600; border-radius: 4px; pointer-events: none; }
+.compare-label.left  { left: 10px; }
+.compare-label.right { right: 10px; }
+.compare-label.center { left: 50%; transform: translateX(-50%); }
+
+.viz-panel {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  border: 1px solid var(--border);
+  border-top: 4px solid #7c3aed;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+.viz-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.viz-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+.viz-group:nth-child(1), .viz-group:nth-child(2), .viz-group:nth-child(3), .viz-group:nth-child(4) {
+  border-right: 1px solid var(--border);
+  padding-right: 8px;
+}
+.viz-group:nth-child(7) {
+  border-right: 0;
+}
+.viz-panel-note {
+  margin: 10px auto 18px;
+  max-width: 920px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.method-section {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0;
+}
+.method-section h2 {
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.method-text {
+  max-width: 820px;
+  margin: 12px auto 0;
+  text-align: center;
+  font-size: 15px;
+  color: var(--text-2);
+}
+.method-figure {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.method-figure img,
+.method-figure object,
+.method-figure iframe {
+  width: 100%;
+  min-height: 330px;
+  border: 0;
+  display: block;
+  background: transparent;
+}
+.method-fallback {
+  min-height: 330px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-2);
+  font-size: 14px;
+}
+.method-fallback a { color: var(--link); font-weight: 700; text-decoration: none; }
+.method-fallback a:hover { text-decoration: underline; }
+.student-summary {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: grid;
+  gap: 10px;
+}
+.student-summary-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.student-summary-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+.student-summary-tag {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #6d28d9;
+  border: 1px solid #c4b5fd;
+  font-size: 12px;
+  font-weight: 800;
+}
+.student-summary-desc {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.meta-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: white;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.meta-chip.accent-cnn { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.meta-chip.accent-vit { background: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
+.meta-chip.accent-light { background: #ecfeff; color: #0f766e; border-color: #a5f3fc; }
+.meta-chip.accent-frozen { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+.meta-chip.accent-best { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
+.viz-section-title {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.viz-section-title.arch { color: #7c3aed; }
+.viz-section-title.strategy { color: #0f766e; }
+.tool-label {
+  align-self: center;
+  margin-right: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.teacher-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #5b21b6;
+  border: 1px solid #c4b5fd;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  user-select: none;
+}
+.tool-btn {
+  appearance: none;
+  border: 1px solid #2f3237;
+  background: #2f3237;
+  color: #f3f4f6;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.tool-btn:hover { transform: translateY(-1px); background: #1f2126; border-color: #1f2126; }
+.tool-btn.active { background: #111318; border-color: #111318; }
+.tool-btn.secondary { background: white; color: var(--text); border-color: var(--border); }
+.tool-btn.secondary:hover { background: var(--bg-soft); border-color: #c8d2df; }
+.tool-btn.best {
+  background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+  border-color: #8b5cf6;
+  color: white;
+  box-shadow: 0 10px 24px rgba(109, 40, 217, 0.22);
+}
+.tool-btn.best:hover { background: linear-gradient(180deg, #9f7aea 0%, #7c3aed 100%); border-color: #9f7aea; }
+.tool-btn.student-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 152px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  text-align: left;
+  line-height: 1.1;
+}
+.student-line-1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+}
+.student-line-2 {
+  font-size: 12px;
+  line-height: 1.35;
+  color: inherit;
+  opacity: 0.88;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.student-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.14);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.param-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  color: #f5e9ff;
+  font-size: 12px;
+  font-weight: 800;
+}
+.viz-stage { margin-top: 16px; }
+.viz-image-mode { display: none; }
+.viz-image-mode.active { display: block; }
+.viz-ply-mode { display: none; }
+.viz-ply-mode.active { display: block; }
+.viz-title { text-align: center; font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+.viz-subtitle { text-align: center; font-size: 14px; color: var(--text-2); margin-bottom: 14px; }
+.viz-subtitle strong { color: var(--text); }
+.viz-ablation {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  display: block;
+}
+.viz-ablation-header { display: flex; flex-direction: column; gap: 6px; align-items: center; margin-bottom: 12px; }
+.ablation-title { font-size: 17px; font-weight: 700; text-align: center; }
+.ablation-subtitle { font-size: 13px; color: var(--text-2); text-align: center; }
+.ablation-signals {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0 10px;
+}
+.ablation-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ablation-signal.on {
+  border-color: var(--good);
+  color: var(--good);
+}
+.ablation-signal.off {
+  border-color: var(--text-3);
+  color: var(--text-3);
+}
+.ablation-signal.best {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+.ablation-signal-label {
+  min-width: 68px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+}
+.ablation-signal-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ablation-signal-row.best .ablation-signal {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.ablation-signal-row.current .ablation-signal {
+  background: transparent;
+}
+.ablation-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.ablation-card {
+  margin-top: 18px;
+  padding: 16px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+}
+.ablation-card + .ablation-card { margin-top: 16px; }
+.ablation-card.arch { border-top: 4px solid #7c3aed; }
+.ablation-card.strategy { border-top: 4px solid #0f766e; }
+.ply-dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ply-card { display: flex; flex-direction: column; gap: 10px; }
+.ply-card-title { text-align: center; font-size: 16px; font-weight: 700; }
+.ply-card-sub { text-align: center; font-size: 13px; color: var(--text-2); }
+
+/* 3D Viewer */
+.ply-wrap { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.ply-stage { width: 100%; aspect-ratio: 16/9; background: linear-gradient(180deg, #f8f8f8 0%, #ececec 100%); border-radius: 6px; position: relative; }
+.ply-stage::after { content: 'drag to rotate · scroll to zoom'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--text-3); pointer-events: none; background: rgba(255,255,255,0.7); padding: 3px 8px; border-radius: 3px; }
+
+/* Tables */
+.tbl-wrap { overflow-x: auto; margin-top: 18px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid var(--border); }
+th, td { padding: 10px 14px; text-align: center; border-bottom: 1px solid var(--border); }
+th { background: var(--bg-soft); font-weight: 600; }
+td:first-child, th:first-child { text-align: left; font-weight: 500; }
+
+.bibtex { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 6px; padding: 18px 22px; color: var(--text); white-space: pre-wrap; overflow-x: auto; text-align: left; }
+.bibtex .k { color: var(--link); }
+
+/* --- Elegant Acknowledgements --- */
+.acknowledgment-section {
+  max-width: 720px;
+  margin: 40px auto;
+  background: var(--bg-soft);
+  border-left: 4px solid var(--accent-2);
+  border-radius: 4px;
+  padding: 20px 24px;
+}
+.acknowledgment-section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.acknowledgment-section p {
+  font-size: 14.5px;
+  color: var(--text-2);
+  margin-bottom: 0;
+}
+
+footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-3); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <div class="venue">IEEE European Conference on Computer Vision (ECCV 2026)</div>
+  <h1>Geometric Foundation Model Distillation<br>for Efficient Lunar 3D Reconstruction</h1>
+
+  <div class="authors">
+    <a href="https://clementinegrethen.github.io/" target="_blank">Clémentine Grethen</a><sup>1</sup>,
+    <a href="https://scholar.google.com/citations?user=H8QDhhAAAAAJ&hl=fr" target="_blank">Géraldine Morin</a><sup>1,*</sup>,
+    <a href="https://www.irit.fr/~Simone.Gasparini/" target="_blank">Simone Gasparini</a><sup>1,*</sup>,
+    <a href="https://scholar.google.com/citations?user=H8QDhhAAAAAJ&hl=fr" target="_blank">Florient Chouteau</a><sup>2,*</sup>
+  </div>
+  <div class="affil"><sup>1</sup>IRIT, University of Toulouse, France &nbsp;·&nbsp; <sup>2</sup>Airbus Defence and Space</div>
+  
+  <div class="author-note">
+    <strong>*</strong> Authors omitted from the official ECCV record due to a submission error that the editorial process did not allow us to correct after acceptance. Their contributions are gratefully acknowledged here.
+  </div>
+
+  <div class="links">
+    <a class="link-btn" href="https://github.com/clementine-grethen/3D-Moon" target="_blank">
+      <span class="link-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.52 7.52 0 0 1 4.01 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></span>
+      GitHub
+    </a>
+    <a class="link-btn outline" href="paper.pdf" target="_blank">
+      <span class="link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2.5L17.5 8H14V4.5zM8 13h8v1.5H8V13zm0 3h8v1.5H8V16zm0-6h5v1.5H8V10z"/></svg></span>
+      Paper
+    </a>
+  </div>
+</header>
+<!-- SECTION ABSTRACT -->
+<section id="pairs">
+  <div class="abstract-box">
+    <h2>Abstract</h2>
+    <p>Large geometric foundation models (e.g.&nbsp;MASt3R, 688.6M parameters) achieve state-of-the-art 3D reconstruction from stereo pairs but are prohibitive to deploy on resource-constrained platforms — particularly relevant for lunar space missions. We propose a distillation framework combining (i)&nbsp;<strong>SVD-based decoder initialization</strong> from the teacher (Eckart–Young optimal), (ii)&nbsp;a <strong>feature-alignment loss</strong> at intermediate ViT layers, and (iii)&nbsp;<strong>full encoder fine-tuning</strong>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="method-section">
+    <h2>Method</h2>
+    <div class="method-figure">
+      <img src="schema_teacher_student-2.png" alt="Teacher to student distillation schema">
+    </div>
+    <div class="method-text">Teacher MASt3R is distilled into a lighter student with SVD decoder initialization, feature alignment, and full encoder fine-tuning.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Choose a stereo pair</h2>
+  <div class="section-intro-text center" style="margin-top: 12px;">
+    <p>Inference was run with our actual <code>checkpoint-50</code> for every model on each pair. Pick one — all comparisons below update accordingly.</p>
+  </div>
+  <div class="pair-thumbs" id="pair-picker"></div>
+</section>
+
+<section>
+  <div class="viz-panel">
+    <div class="viz-section-title arch">Student Architecture Performance Ablation</div>
+    <div class="viz-panel-note" id="viz-panel-note">S2 BEST uses <strong>154.9M</strong> parameters versus <strong>688.6M</strong> for Teacher = MASt3R. The reduction is the point.</div>
+    <div class="viz-toolbar">
+      <div class="viz-group">
+        <span class="tool-label">Teacher</span>
+        <span class="teacher-pill">MASt3R</span>
+      </div>
+      <div class="viz-group">
+        <span class="tool-label">Mode</span>
+        <button class="tool-btn secondary mode-btn active" data-mode="depth">Depth map</button>
+        <button class="tool-btn secondary mode-btn" data-mode="slope">Slope map</button>
+        <button class="tool-btn secondary mode-btn" data-mode="ply">PLY</button>
+      </div>
+      <div class="viz-group">
+        <span class="tool-label">View pair</span>
+        <button class="tool-btn secondary view-btn active" data-view="0">Left</button>
+        <button class="tool-btn secondary view-btn" data-view="1">Right</button>
+      </div>
+      <div class="viz-group">
+        <span class="tool-label">Student architecture</span>
+        <button class="tool-btn student-btn student-card active" data-key="S1_MobileNet"><span class="student-line-1">S1 <span class="param-badge">135.7M</span></span><span class="student-line-2">MobileNetV3-L encoder · 256/6/4 decoder</span></button>
+        <button class="tool-btn student-btn student-card best" data-key="S2_full"><span class="student-line-1">S2 BEST <span class="param-badge">154.9M</span></span><span class="student-line-2">ViT-Small encoder · 512/6/4 decoder</span></button>
+        <button class="tool-btn student-btn student-card" data-key="S3_frozen"><span class="student-line-1">S3 <span class="param-badge">154.9M</span></span><span class="student-line-2">ViT-Small frozen encoder · 512/6/4 decoder</span></button>
+        <button class="tool-btn student-btn student-card" data-key="S4_reduced"><span class="student-line-1">S4 <span class="param-badge">94.9M</span></span><span class="student-line-2">ViT-Small encoder · 256/6/4 decoder</span></button>
+        <button class="tool-btn student-btn student-card" data-key="S5_tiny"><span class="student-line-1">S5 <span class="param-badge">138.5M</span></span><span class="student-line-2">ViT-Tiny encoder · 256/6/4 decoder</span></button>
+      </div>
+      <div class="student-summary" id="student-summary">
+        <div class="student-summary-head">
+          <div class="student-summary-name" id="student-summary-name">S2 BEST</div>
+          <div class="student-summary-tag" id="student-summary-tag">ViT-S/14 · DINOv2</div>
+        </div>
+        <div class="student-summary-desc" id="student-summary-desc">Full-capacity student with trainable encoder, full decoder, and the best distilled trade-off.</div>
+        <div class="meta-chips" id="student-summary-chips"></div>
+      </div>
+      <div class="viz-group">
+        <span class="tool-label">Compare order</span>
+        <button class="tool-btn secondary target-btn active" data-target="teacher">Teacher</button>
+        <button class="tool-btn secondary target-btn" data-target="student">Student</button>
+      </div>
+    </div>
+    <div class="viz-stage">
+      <div class="viz-image-mode active" id="viz-image-mode">
+        <div class="viz-title" id="viz-title">Depth map</div>
+        <div class="viz-subtitle" id="viz-subtitle">Teacher vs selected student · View pair: left / right</div>
+        <div class="compare-wrap">
+          <div class="compare-stage" id="viz-compare-stage">
+            <img id="viz-base" src="" alt="">
+            <img id="viz-overlay" class="overlay" src="" alt="">
+            <div class="compare-handle" id="viz-handle"></div>
+            <div class="compare-label left" id="viz-left-label">Teacher</div>
+            <div class="compare-label right" id="viz-right-label">Student</div>
+          </div>
+        </div>
+      </div>
+      <div class="viz-ply-mode" id="viz-ply-mode">
+        <div class="viz-title">Point Cloud</div>
+        <div class="viz-subtitle" id="viz-ply-subtitle">Student and Teacher shown côte à côte</div>
+        <div class="ply-dual-grid">
+          <div class="ply-card">
+            <div class="ply-card-title" id="viz-ply-student-title">Student</div>
+            <div class="ply-card-sub" id="viz-ply-student-sub">Selected architecture</div>
+            <div class="ply-wrap"><div id="viz-ply-student" class="ply-stage"></div></div>
+          </div>
+          <div class="ply-card">
+            <div class="ply-card-title">Teacher</div>
+            <div class="ply-card-sub">MASt3R · 688.6M</div>
+            <div class="ply-wrap"><div id="viz-ply-teacher" class="ply-stage"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="viz-ablation" id="viz-ablation">
+        <div class="ablation-card strategy">
+          <div class="viz-section-title strategy">Distillation Strategy Ablation</div>
+          <div class="ablation-title">Paper ablation study on S2</div>
+          <div class="ablation-subtitle">Compare BEST against no SVD / frozen encoder / no feature loss / GT supervision. Depth and slope both available.</div>
+          <div class="ablation-signals" id="ablation-signals">
+            <div class="ablation-signal-row best">
+              <div class="ablation-signal-label">Best:</div>
+              <span class="ablation-signal best" data-signal="svd">SVD</span>
+              <span class="ablation-signal best" data-signal="frozen">Frozen enc.</span>
+              <span class="ablation-signal best" data-signal="feat">Feat.</span>
+              <span class="ablation-signal best" data-signal="gt">GT</span>
+            </div>
+            <div class="ablation-signal-row current">
+              <div class="ablation-signal-label" id="ablation-selected-label">Selected: B</div>
+              <span class="ablation-signal" data-signal="svd">SVD</span>
+              <span class="ablation-signal" data-signal="frozen">Frozen enc.</span>
+              <span class="ablation-signal" data-signal="feat">Feat.</span>
+              <span class="ablation-signal" data-signal="gt">GT</span>
+            </div>
+          </div>
+          <div class="viz-toolbar" style="margin: 12px 0 12px;">
+            <div class="viz-group">
+              <span class="tool-label">Ablation mode</span>
+              <button class="tool-btn secondary abl-mode-btn active" data-ablmode="depth">Depth map</button>
+              <button class="tool-btn secondary abl-mode-btn" data-ablmode="slope">Slope map</button>
+            </div>
+            <div class="viz-group">
+              <span class="tool-label">Ablation</span>
+              <button class="tool-btn secondary abl-btn active" data-abl="B">B · no SVD</button>
+              <button class="tool-btn secondary abl-btn" data-abl="C">C · frozen enc.</button>
+              <button class="tool-btn secondary abl-btn" data-abl="D">D · no feat.</button>
+              <button class="tool-btn secondary abl-btn" data-abl="E">E · GT sup.</button>
+            </div>
+          </div>
+          <div class="ablation-grid">
+            <div>
+              <div class="viz-title" id="viz-abl-title">Distillation ablation</div>
+              <div class="viz-subtitle" id="viz-abl-subtitle">A (BEST) vs selected variant · depth / slope</div>
+              <div class="compare-wrap">
+                <div class="compare-stage" id="viz-abl-stage">
+                  <img id="viz-abl-base" src="" alt="">
+                  <img id="viz-abl-overlay" class="overlay" src="" alt="">
+                  <div class="compare-handle" id="viz-abl-handle"></div>
+                  <div class="compare-label left">A (BEST)</div>
+                  <div class="compare-label right" id="viz-abl-right">B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Citation</h2>
+  <div class="section-intro-text center" style="margin-top: 12px;">
+    <p>If you use this work, please cite the paper below.</p>
+  </div>
+  <div class="bibtex"><span class="k">@inproceedings</span>{grethen2026geometric,
+  title={Geometric Foundation Model Distillation for Efficient Lunar 3D Reconstruction},
+  author={Grethen, Clémentine and Morin, Géraldine and Gasparini, Simone and Chouteau, Florient},
+  booktitle={European Conference on Computer Vision (ECCV)},
+  year={2026}
+}</div>
+</section>
+
+<section class="acknowledgment-section">
+  <h2>Acknowledgements</h2>
+  <p>We thank the IRIT and Airbus Defence and Space teams for their support, and the authors whose names were omitted from the official ECCV record due to a submission error that could not be corrected after acceptance.</p>
+</section>
+
+<footer>© 2026 — IRIT, University of Toulouse · Airbus Defence and Space</footer>
+
+</div> <!-- Fin du container -->
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { PLYLoader }     from 'three/addons/loaders/PLYLoader.js';
+
+function setupSlider(stageId, handleId) {
+  const stage = document.getElementById(stageId);
+  const handle = document.getElementById(handleId);
+  const overlay = stage.querySelector('.overlay');
+  let dragging = false;
+  function setX(cx) {
+    const r = stage.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(100, ((cx - r.left) / r.width) * 100));
+    handle.style.left = `${pct}%`;
+    overlay.style.clipPath = `inset(0 0 0 ${pct}%)`;
+  }
+  stage.addEventListener('mousedown', e => { dragging = true; setX(e.clientX); });
+  window.addEventListener('mousemove', e => { if (dragging) setX(e.clientX); });
+  window.addEventListener('mouseup', () => { dragging = false; });
+  stage.addEventListener('touchstart', e => { dragging = true; setX(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchmove', e => { if (dragging) setX(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchend', () => { dragging = false; });
+}
+
+setupSlider('viz-compare-stage', 'viz-handle');
+setupSlider('viz-abl-stage', 'viz-abl-handle');
+
+/* ============= 3D Viewer ============= */
+class PLYScene {
+  constructor(container) {
+    this.container = container;
+    const w = container.clientWidth, h = container.clientHeight;
+    this.scene = new THREE.Scene(); this.scene.background = new THREE.Color(0xf0f0f0);
+    this.camera = new THREE.PerspectiveCamera(45, w/h, 0.001, 100);
+    this.camera.position.set(1.2, 0.7, 1.6);
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(w, h); this.renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(this.renderer.domElement);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enableDamping = true; this.controls.autoRotate = true; this.controls.autoRotateSpeed = 0.4;
+    this.points = null; this.loader = new PLYLoader();
+    this.peer = null;
+    new ResizeObserver(() => this.onResize()).observe(container);
+    this.loop();
+    this.controls.addEventListener('start', () => { if (this.peer) this.peer.controls.autoRotate = false; this.controls.autoRotate = false; });
+    this.controls.addEventListener('change', () => { if (this.peer) { this.peer.camera.position.copy(this.camera.position); this.peer.camera.quaternion.copy(this.camera.quaternion); this.peer.controls.target.copy(this.controls.target); } });
+  }
+  setPeer(p) { this.peer = p; }
+  onResize() { const w = this.container.clientWidth, h = this.container.clientHeight; this.camera.aspect = w/h; this.camera.updateProjectionMatrix(); this.renderer.setSize(w, h); }
+  load(url) {
+    this.loader.load(url, geo => {
+      if (this.points) { this.scene.remove(this.points); this.points.geometry.dispose(); }
+      geo.computeBoundingBox();
+      const c = geo.boundingBox.getCenter(new THREE.Vector3()); geo.translate(-c.x, -c.y, -c.z);
+      const s = geo.boundingBox.getSize(new THREE.Vector3()).length(); geo.scale(1/s, 1/s, 1/s);
+      const mat = new THREE.PointsMaterial({ vertexColors: geo.attributes.color !== undefined, color: 0x888888, size: 0.004, sizeAttenuation: true });
+      this.points = new THREE.Points(geo, mat); this.scene.add(this.points);
+    });
+  }
+  loop() { requestAnimationFrame(() => this.loop()); this.controls.update(); this.renderer.render(this.scene, this.camera); }
+}
+let vizScene = null;
+function ensureVizScene() {
+  if (!vizScene) {
+    vizScene = {
+      student: new PLYScene(document.getElementById('viz-ply-student')),
+      teacher: new PLYScene(document.getElementById('viz-ply-teacher')),
+    };
+    vizScene.student.setPeer(vizScene.teacher);
+    vizScene.teacher.setPeer(vizScene.student);
+  }
+  return vizScene;
+}
+
+const ARCH_META = {
+  'S1_MobileNet': { name: 'S1', file: 'S1_MobileNet' },
+  'S2_full': { name: 'S2', file: 'S2_full' },
+  'S3_frozen': { name: 'S3', file: 'S3_frozen' },
+  'S4_reduced': { name: 'S4', file: 'S4_reduced' },
+  'S5_tiny': { name: 'S5', file: 'S5_tiny' },
+};
+
+const ARCH_DETAILS = {
+  'S1_MobileNet': {
+    name: 'S1',
+    tag: 'MobileNetV3-L · 256/6/4',
+    desc: 'Compact MobileNetV3-L encoder with a small decoder. Fastest architectural baseline and the most classical design.',
+    chips: [
+      ['MobileNetV3-L', 'accent-cnn'],
+      ['Encoder', 'accent-light'],
+      ['256/6/4', 'accent-light'],
+      ['Trainable', 'accent-best'],
+    ],
+  },
+  'S2_full': {
+    name: 'S2 BEST',
+    tag: 'ViT-Small · 512/6/4',
+    desc: 'Best overall student: ViT-Small encoder with the larger 512/6/4 decoder and the strongest distilled trade-off.',
+    chips: [
+      ['ViT-Small', 'accent-vit'],
+      ['Encoder', 'accent-best'],
+      ['512/6/4', 'accent-best'],
+    ],
+  },
+  'S3_frozen': {
+    name: 'S3',
+    tag: 'ViT-Small · frozen encoder',
+    desc: 'Same ViT-Small backbone as S2, but with the encoder frozen to isolate the impact of adaptation.',
+    chips: [
+      ['ViT-Small', 'accent-vit'],
+      ['Frozen encoder', 'accent-frozen'],
+      ['512/6/4', 'accent-vit'],
+      ['Adaptation off', 'accent-frozen'],
+    ],
+  },
+  'S4_reduced': {
+    name: 'S4',
+    tag: 'ViT-Small · 256/6/4',
+    desc: 'A smaller 256/6/4 decoder variant to probe whether a lighter head can retain geometry quality.',
+    chips: [
+      ['ViT-Small', 'accent-vit'],
+      ['256/6/4', 'accent-light'],
+      ['Reduced decoder', 'accent-light'],
+      ['Compact', 'accent-light'],
+    ],
+  },
+  'S5_tiny': {
+    name: 'S5',
+    tag: 'ViT-Tiny · 256/6/4',
+    desc: 'Tiny transformer baseline with a small decoder that makes the capacity gap with MASt3R immediately visible.',
+    chips: [
+      ['ViT-Tiny', 'accent-light'],
+      ['Encoder', 'accent-light'],
+      ['256/6/4', 'accent-light'],
+      ['Low capacity', 'accent-frozen'],
+    ],
+  },
+};
+
+const ABLATION_SIGNALS = {
+  B: { svd: false, frozen: false, feat: true, gt: false },
+  C: { svd: true, frozen: true, feat: true, gt: false },
+  D: { svd: true, frozen: false, feat: false, gt: false },
+  E: { svd: false, frozen: false, feat: false, gt: true },
+};
+
+let MANIFEST = [];
+let CUR_PAIR = null;
+let CUR_ARCH = 'S2_full';
+let CUR_MODE = 'depth';
+let CUR_VIEW = '0';
+let CUR_TARGET = 'teacher';
+let CUR_ABL = 'B';
+let CUR_ABL_MODE = 'depth';
+let ASSET_ROOT = 'assets';
+
+function ap(rel) { return `${ASSET_ROOT}/${rel}`; }
+function pp() { return ap(`pairs/${CUR_PAIR.id}`); }
+function renderStudentSummary() {
+  const meta = ARCH_DETAILS[CUR_ARCH] || ARCH_DETAILS.S2_full;
+  document.getElementById('student-summary-name').textContent = meta.name;
+  document.getElementById('student-summary-tag').textContent = meta.tag;
+  document.getElementById('student-summary-desc').textContent = meta.desc;
+  const chips = document.getElementById('student-summary-chips');
+  chips.innerHTML = meta.chips.map(([label, cls]) => `<span class="meta-chip ${cls}">${label}</span>`).join('');
+}
+
+function renderAblationSignals() {
+  const state = ABLATION_SIGNALS[CUR_ABL] || ABLATION_SIGNALS.B;
+  document.querySelector('#ablation-signals .ablation-signal-row.best').querySelectorAll('.ablation-signal').forEach(el => {
+    const key = el.dataset.signal;
+    const active = key === 'svd' || key === 'feat';
+    el.classList.toggle('on', active);
+    el.classList.toggle('off', !active);
+    const label = key === 'svd' ? 'SVD' : key === 'frozen' ? 'Frozen enc.' : key === 'feat' ? 'Feat.' : 'GT';
+    el.innerHTML = `${active ? '✓' : '✕'} ${label}`;
+  });
+  document.getElementById('ablation-selected-label').textContent = `Selected: ${CUR_ABL} · ${CUR_ABL === 'B' ? 'no SVD' : CUR_ABL === 'C' ? 'frozen enc.' : CUR_ABL === 'D' ? 'no feat.' : 'GT sup.'}`;
+  document.querySelector('#ablation-signals .ablation-signal-row.current').querySelectorAll('.ablation-signal').forEach(el => {
+    const key = el.dataset.signal;
+    const active = !!state[key];
+    el.classList.toggle('on', active);
+    el.classList.toggle('off', !active);
+    const label = key === 'svd' ? 'SVD' : key === 'frozen' ? 'Frozen enc.' : key === 'feat' ? 'Feat.' : 'GT';
+    el.innerHTML = `${active ? '✓' : '✕'} ${label}`;
+  });
+}
+async function detectAssetRoot() {
+  for (const root of ['assets', 'assets_new_eval']) {
+    try {
+      const r = await fetch(`${root}/pairs/manifest.json`, { cache: 'no-cache' });
+      if (r.ok) return root;
+    } catch (e) {
+      // Try next candidate.
+    }
+  }
+  return 'assets';
+}
+
+function refreshToolState() {
+  document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.mode === CUR_MODE));
+  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === CUR_VIEW));
+  document.querySelectorAll('.student-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.key === CUR_ARCH));
+  document.querySelectorAll('.target-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.target === CUR_TARGET));
+  document.querySelectorAll('.abl-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.abl === CUR_ABL));
+  document.querySelectorAll('.abl-mode-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.ablmode === CUR_ABL_MODE));
+}
+
+function refresh() {
+  if (!CUR_PAIR) return;
+  const base = pp();
+  const studentLabel = (ARCH_DETAILS[CUR_ARCH] || ARCH_DETAILS.S2_full).name;
+  const studentFile = ARCH_META[CUR_ARCH].file;
+  const compareTitle = CUR_MODE === 'depth' ? 'Depth map' : CUR_MODE === 'slope' ? 'Slope map' : 'Point Cloud';
+  document.getElementById('viz-title').textContent = compareTitle;
+  document.getElementById('viz-panel-note').innerHTML = `S2 BEST = <strong>154.9M</strong> parameters versus <strong>688.6M</strong> for Teacher = MASt3R. Selected pair: <strong>${CUR_PAIR.name}</strong>.`;
+  renderStudentSummary();
+  if (CUR_MODE === 'ply') {
+    document.getElementById('viz-image-mode').classList.remove('active');
+    document.getElementById('viz-ply-mode').classList.add('active');
+    const scenes = ensureVizScene();
+    document.getElementById('viz-ply-student-title').textContent = studentLabel;
+    document.getElementById('viz-ply-student-sub').textContent = `Selected architecture · ${studentLabel}`;
+    scenes.student.load(`${base}/ply/${studentFile}.ply`);
+    scenes.teacher.load(`${base}/ply/Teacher.ply`);
+  } else {
+    document.getElementById('viz-image-mode').classList.add('active');
+    document.getElementById('viz-ply-mode').classList.remove('active');
+    document.getElementById('viz-subtitle').textContent = `View ${parseInt(CUR_VIEW) + 1} · ${CUR_TARGET === 'teacher' ? 'Teacher vs student' : 'Student vs Teacher'}`;
+    const teacherSrc = `${base}/${CUR_MODE}_v${CUR_VIEW}/Teacher.png`;
+    const studentSrc = `${base}/${CUR_MODE}_v${CUR_VIEW}/${studentFile}.png`;
+    const leftIsTeacher = CUR_TARGET === 'teacher';
+    document.getElementById('viz-base').src = leftIsTeacher ? teacherSrc : studentSrc;
+    document.getElementById('viz-overlay').src = leftIsTeacher ? studentSrc : teacherSrc;
+    document.getElementById('viz-left-label').textContent = leftIsTeacher ? 'Teacher' : studentLabel;
+    document.getElementById('viz-right-label').textContent = leftIsTeacher ? studentLabel : 'Teacher';
+  }
+  document.getElementById('viz-ablation').classList.add('active');
+  {
+    const ablBase = `${base}/abl_${CUR_ABL_MODE}_v${CUR_VIEW}`;
+    document.getElementById('viz-abl-base').src = `${ablBase}/A.png`;
+    document.getElementById('viz-abl-overlay').src = `${ablBase}/${CUR_ABL}.png`;
+    document.getElementById('viz-abl-right').textContent = `${CUR_ABL} · ${CUR_ABL === 'B' ? 'no SVD' : CUR_ABL === 'C' ? 'frozen enc.' : CUR_ABL === 'D' ? 'no feat.' : 'GT sup.'}`;
+    document.getElementById('viz-abl-subtitle').textContent = `A (BEST) vs ${CUR_ABL} · ${CUR_ABL_MODE} map`;
+    renderAblationSignals();
+  }
+  refreshToolState();
+}
+
+detectAssetRoot().then(root => {
+  ASSET_ROOT = root;
+  return fetch(ap('pairs/manifest.json'));
+}).then(r => r.json()).then(data => {
+  MANIFEST = data;
+  const picker = document.getElementById('pair-picker');
+  picker.innerHTML = '';
+  data.forEach((p, i) => {
+    const div = document.createElement('button');
+    div.className = 'pair-thumb' + (i === 0 ? ' active' : '');
+    div.dataset.key = p.id;
+    div.innerHTML = `
+      <div class="pair-thumb-imgs">
+        <img src="${ap(`pairs/${p.id}/im1.jpg`)}" alt="">
+        <img src="${ap(`pairs/${p.id}/im2.jpg`)}" alt="">
+      </div>
+      <div class="pair-thumb-name">${p.name}</div>
+      <div class="pair-thumb-detail">${p.detail}</div>
+    `;
+    div.addEventListener('click', () => {
+      CUR_PAIR = p;
+      document.querySelectorAll('.pair-thumb').forEach(b => b.classList.toggle('active', b.dataset.key === p.id));
+      refresh();
+    });
+    picker.appendChild(div);
+  });
+  document.querySelectorAll('.mode-btn').forEach(b => b.addEventListener('click', () => { CUR_MODE = b.dataset.mode; refresh(); }));
+  document.querySelectorAll('.view-btn').forEach(b => b.addEventListener('click', () => { CUR_VIEW = b.dataset.view; refresh(); }));
+  document.querySelectorAll('.student-btn').forEach(b => b.addEventListener('click', () => { CUR_ARCH = b.dataset.key; refresh(); }));
+  document.querySelectorAll('.target-btn').forEach(b => b.addEventListener('click', () => { CUR_TARGET = b.dataset.target; refresh(); }));
+  document.querySelectorAll('.abl-btn').forEach(b => b.addEventListener('click', () => { CUR_ABL = b.dataset.abl; refresh(); }));
+  document.querySelectorAll('.abl-mode-btn').forEach(b => b.addEventListener('click', () => { CUR_ABL_MODE = b.dataset.ablmode; refresh(); }));
+  CUR_PAIR = data[0]; refresh();
+});
+</script>
+</body>
+</html>.link-btn.outline:hover { background: var(--bg-soft); border-color: var(--text); }
 
 .quick-links { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 .quick-link { display: inline-flex; align-items: center; padding: 7px 12px; border: 1px solid var(--border); border-radius: 999px; background: white; color: var(--text-2); text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.15s ease; }
