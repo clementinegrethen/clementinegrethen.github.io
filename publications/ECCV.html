@@ -31,6 +31,7 @@ h1 { font-size: clamp(26px, 4.6vw, 40px); font-weight: 700; line-height: 1.25; m
 .authors { font-size: 22px; margin: 22px 0 8px; line-height: 1.6; }
 .authors a { color: var(--text); text-decoration: none; }
 .authors .missing { color: var(--accent-2); }
+.authors a { color: var(--text); text-decoration: none; }
 .authors sup { font-size: 11px; color: var(--text-3); margin: 0 1px; }
 .affil { font-size: 16px; color: var(--text-3); margin-top: 6px; }
 .author-note { margin: 18px auto 0; max-width: 720px; font-size: 16px; color: var(--accent-2); padding: 10px 16px; background: #eef4fb; border: 1px solid #c7d6e8; border-radius: 6px; font-style: italic; }
@@ -47,6 +48,7 @@ h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: var(--text);
 p { color: var(--text-2); margin-bottom: 14px; max-width: 880px; }
 p strong { color: var(--text); }
 .abstract p { text-align: justify; max-width: none; }
+.acknowledgment p { text-align: justify; max-width: none; }
 
 .teaser-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 600px; margin: 36px auto 6px; }
 .teaser-pair figure { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
@@ -373,8 +375,13 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
 </section>
 
 </div>
-
-<footer>© 2026 — IRIT, University of Toulouse · Airbus Defence and Space</footer>
+<section>
+  <h2>Acknowledgements</h2>
+  <div class="abstract">
+    <p>This work was supported by the French Agence Nationale de la Recherche (ANR, “Investissements d’avenir”, ANR-21-ESRE-0051) and the European Space Agency (ESA, contract 4000140461/23/NL/GLC/my).</p>
+  </div>
+</section>
+<footer>© 2026 — IRIT, University of Toulouse </footer>
 
 <script type="importmap">
 { "imports": {
