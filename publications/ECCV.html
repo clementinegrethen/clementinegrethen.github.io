@@ -108,8 +108,8 @@ p strong { color: var(--text); }
 
 /* Thumbnails et listes */
 .pair-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 16px; }
-.pair-thumb { background: var(--bg-card); border: 2px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.18s; padding: 0; font: inherit; text-align: left; }
-.pair-thumb:hover { border-color: var(--accent-2); transform: translateY(-3px); }
+.pair-thumb { background: white; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.18s, border-color 0.18s, background 0.18s; padding: 0; font: inherit; text-align: left; }
+.pair-thumb:hover { border-color: var(--accent-2); transform: translateY(-3px); background: var(--bg-soft); }
 .pair-thumb.active { border-color: var(--accent); box-shadow: 0 4px 18px rgba(30, 77, 139, 0.18); }
 .pair-thumb .pair-thumb-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
 .pair-thumb .pair-thumb-imgs img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
@@ -118,7 +118,7 @@ p strong { color: var(--text); }
 
 /* Sliders */
 .compare-wrap { position: relative; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; user-select: none; }
-.compare-stage { position: relative; width: 100%; aspect-ratio: 16/9; background: #f0f0f0; overflow: hidden; }
+.compare-stage { position: relative; width: 100%; aspect-ratio: 16/9; background: #f0f0f0; overflow: hidden; touch-action: none; }
 .compare-stage img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 .compare-stage .overlay { clip-path: inset(0 0 0 50%); }
 .compare-handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: white; box-shadow: 0 0 0 1px rgba(0,0,0,0.35); transform: translateX(-1.5px); cursor: ew-resize; }
@@ -140,24 +140,21 @@ p strong { color: var(--text); }
 }
 .viz-toolbar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
   margin-bottom: 16px;
 }
 .viz-group {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
-.viz-group:nth-child(1), .viz-group:nth-child(2), .viz-group:nth-child(3), .viz-group:nth-child(4) {
-  border-right: 1px solid var(--border);
-  padding-right: 8px;
-}
-.viz-group:nth-child(7) {
-  border-right: 0;
+.viz-group.student-group {
+  flex-direction: column;
+  align-items: flex-start;
 }
 .viz-panel-note {
   margin: 10px auto 18px;
@@ -206,60 +203,6 @@ p strong { color: var(--text); }
 }
 .method-fallback a { color: var(--link); font-weight: 700; text-decoration: none; }
 .method-fallback a:hover { text-decoration: underline; }
-.student-summary {
-  margin-top: 14px;
-  padding: 14px 16px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  display: grid;
-  gap: 10px;
-}
-.student-summary-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.student-summary-name {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--text);
-}
-.student-summary-tag {
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #ede9fe;
-  color: #6d28d9;
-  border: 1px solid #c4b5fd;
-  font-size: 12px;
-  font-weight: 800;
-}
-.student-summary-desc {
-  font-size: 14px;
-  color: var(--text-2);
-  line-height: 1.5;
-}
-.meta-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.meta-chip {
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: white;
-  border: 1px solid var(--border);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-2);
-}
-.meta-chip.accent-cnn { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-.meta-chip.accent-vit { background: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
-.meta-chip.accent-light { background: #ecfeff; color: #0f766e; border-color: #a5f3fc; }
-.meta-chip.accent-frozen { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
-.meta-chip.accent-best { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
 .viz-section-title {
   text-align: center;
   font-size: 15px;
@@ -295,9 +238,9 @@ p strong { color: var(--text); }
 }
 .tool-btn {
   appearance: none;
-  border: 1px solid #2f3237;
-  background: #2f3237;
-  color: #f3f4f6;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
   border-radius: 999px;
   padding: 10px 16px;
   font: inherit;
@@ -306,8 +249,8 @@ p strong { color: var(--text); }
   cursor: pointer;
   transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
-.tool-btn:hover { transform: translateY(-1px); background: #1f2126; border-color: #1f2126; }
-.tool-btn.active { background: #111318; border-color: #111318; }
+.tool-btn:hover { transform: translateY(-1px); background: var(--bg-soft); border-color: #c8d2df; }
+.tool-btn.active { background: white; border-color: var(--accent); color: var(--accent); }
 .tool-btn.secondary { background: white; color: var(--text); border-color: var(--border); }
 .tool-btn.secondary:hover { background: var(--bg-soft); border-color: #c8d2df; }
 .tool-btn.best {
@@ -318,40 +261,27 @@ p strong { color: var(--text); }
 }
 .tool-btn.best:hover { background: #f5f3ff; border-color: #7c3aed; }
 .tool-btn.student-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  min-width: 152px;
-  padding: 10px 12px;
-  border-radius: 8px;
+  min-width: 0;
+  padding: 10px 16px;
+  border-radius: 999px;
   text-align: left;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 .student-line-1 {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
 }
 .student-line-2 {
+  display: none;
   font-size: 12px;
   line-height: 1.35;
   color: inherit;
   opacity: 0.88;
   text-transform: none;
   letter-spacing: 0;
-}
-.student-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 7px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.14);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
 }
 .param-badge {
   display: inline-flex;
@@ -567,21 +497,13 @@ footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: cente
         <button class="tool-btn secondary view-btn active" data-view="0">Left</button>
         <button class="tool-btn secondary view-btn" data-view="1">Right</button>
       </div>
-      <div class="viz-group">
+      <div class="viz-group student-group">
         <span class="tool-label">Student architecture</span>
-        <button class="tool-btn student-btn student-card active" data-key="S1_MobileNet"><span class="student-line-1">S1 <span class="param-badge">135.7M</span></span><span class="student-line-2">MobileNetV3-L encoder · 256/6/4 decoder</span></button>
+        <button class="tool-btn secondary student-btn student-card active" data-key="S1_MobileNet"><span class="student-line-1">S1 <span class="param-badge">135.7M</span></span><span class="student-line-2">MobileNetV3-L encoder · 256/6/4 decoder</span></button>
         <button class="tool-btn student-btn student-card best" data-key="S2_full"><span class="student-line-1">S2 BEST <span class="param-badge">154.9M</span></span><span class="student-line-2">ViT-Small encoder · 512/6/4 decoder</span></button>
-        <button class="tool-btn student-btn student-card" data-key="S3_frozen"><span class="student-line-1">S3 <span class="param-badge">154.9M</span></span><span class="student-line-2">ViT-Small frozen encoder · 512/6/4 decoder</span></button>
-        <button class="tool-btn student-btn student-card" data-key="S4_reduced"><span class="student-line-1">S4 <span class="param-badge">94.9M</span></span><span class="student-line-2">ViT-Small encoder · 256/6/4 decoder</span></button>
-        <button class="tool-btn student-btn student-card" data-key="S5_tiny"><span class="student-line-1">S5 <span class="param-badge">138.5M</span></span><span class="student-line-2">ViT-Tiny encoder · 256/6/4 decoder</span></button>
-      </div>
-      <div class="student-summary" id="student-summary">
-        <div class="student-summary-head">
-          <div class="student-summary-name" id="student-summary-name">S2 BEST</div>
-          <div class="student-summary-tag" id="student-summary-tag">ViT-S/14 · DINOv2</div>
-        </div>
-        <div class="student-summary-desc" id="student-summary-desc">Full-capacity student with trainable encoder, full decoder, and the best distilled trade-off.</div>
-        <div class="meta-chips" id="student-summary-chips"></div>
+        <button class="tool-btn secondary student-btn student-card" data-key="S3_frozen"><span class="student-line-1">S3 <span class="param-badge">154.9M</span></span><span class="student-line-2">ViT-Small frozen encoder · 512/6/4 decoder</span></button>
+        <button class="tool-btn secondary student-btn student-card" data-key="S4_reduced"><span class="student-line-1">S4 <span class="param-badge">94.9M</span></span><span class="student-line-2">ViT-Small encoder · 256/6/4 decoder</span></button>
+        <button class="tool-btn secondary student-btn student-card" data-key="S5_tiny"><span class="student-line-1">S5 <span class="param-badge">138.5M</span></span><span class="student-line-2">ViT-Tiny encoder · 256/6/4 decoder</span></button>
       </div>
       <div class="viz-group">
         <span class="tool-label">Compare order</span>
@@ -714,18 +636,35 @@ function setupSlider(stageId, handleId) {
   const handle = document.getElementById(handleId);
   const overlay = stage.querySelector('.overlay');
   let dragging = false;
+  let activePointerId = null;
   function setX(cx) {
     const r = stage.getBoundingClientRect();
     const pct = Math.max(0, Math.min(100, ((cx - r.left) / r.width) * 100));
     handle.style.left = `${pct}%`;
     overlay.style.clipPath = `inset(0 0 0 ${pct}%)`;
   }
-  stage.addEventListener('mousedown', e => { dragging = true; setX(e.clientX); });
-  window.addEventListener('mousemove', e => { if (dragging) setX(e.clientX); });
-  window.addEventListener('mouseup', () => { dragging = false; });
-  stage.addEventListener('touchstart', e => { dragging = true; setX(e.touches[0].clientX); }, { passive: true });
-  window.addEventListener('touchmove', e => { if (dragging) setX(e.touches[0].clientX); }, { passive: true });
-  window.addEventListener('touchend', () => { dragging = false; });
+  stage.addEventListener('pointerdown', e => {
+    dragging = true;
+    activePointerId = e.pointerId;
+    stage.setPointerCapture(activePointerId);
+    setX(e.clientX);
+    e.preventDefault();
+  });
+  stage.addEventListener('pointermove', e => {
+    if (!dragging || e.pointerId !== activePointerId) return;
+    setX(e.clientX);
+  });
+  const stopDragging = e => {
+    if (e.pointerId !== activePointerId) return;
+    dragging = false;
+    activePointerId = null;
+  };
+  stage.addEventListener('pointerup', stopDragging);
+  stage.addEventListener('pointercancel', stopDragging);
+  stage.addEventListener('lostpointercapture', () => {
+    dragging = false;
+    activePointerId = null;
+  });
 }
 
 setupSlider('viz-compare-stage', 'viz-handle');
@@ -786,61 +725,12 @@ const ARCH_META = {
   'S5_tiny': { name: 'S5', file: 'S5_tiny' },
 };
 
-const ARCH_DETAILS = {
-  'S1_MobileNet': {
-    name: 'S1',
-    tag: 'MobileNetV3-L · 256/6/4',
-    desc: 'Compact MobileNetV3-L encoder with a small decoder. Fastest architectural baseline and the most classical design.',
-    chips: [
-      ['MobileNetV3-L', 'accent-cnn'],
-      ['Encoder', 'accent-light'],
-      ['256/6/4', 'accent-light'],
-      ['Trainable', 'accent-best'],
-    ],
-  },
-  'S2_full': {
-    name: 'S2 BEST',
-    tag: 'ViT-Small · 512/6/4',
-    desc: 'Best overall student: ViT-Small encoder with the larger 512/6/4 decoder and the strongest distilled trade-off.',
-    chips: [
-      ['ViT-Small', 'accent-vit'],
-      ['Encoder', 'accent-best'],
-      ['512/6/4', 'accent-best'],
-    ],
-  },
-  'S3_frozen': {
-    name: 'S3',
-    tag: 'ViT-Small · frozen encoder',
-    desc: 'Same ViT-Small backbone as S2, but with the encoder frozen to isolate the impact of adaptation.',
-    chips: [
-      ['ViT-Small', 'accent-vit'],
-      ['Frozen encoder', 'accent-frozen'],
-      ['512/6/4', 'accent-vit'],
-      ['Adaptation off', 'accent-frozen'],
-    ],
-  },
-  'S4_reduced': {
-    name: 'S4',
-    tag: 'ViT-Small · 256/6/4',
-    desc: 'A smaller 256/6/4 decoder variant to probe whether a lighter head can retain geometry quality.',
-    chips: [
-      ['ViT-Small', 'accent-vit'],
-      ['256/6/4', 'accent-light'],
-      ['Reduced decoder', 'accent-light'],
-      ['Compact', 'accent-light'],
-    ],
-  },
-  'S5_tiny': {
-    name: 'S5',
-    tag: 'ViT-Tiny · 256/6/4',
-    desc: 'Tiny transformer baseline with a small decoder that makes the capacity gap with MASt3R immediately visible.',
-    chips: [
-      ['ViT-Tiny', 'accent-light'],
-      ['Encoder', 'accent-light'],
-      ['256/6/4', 'accent-light'],
-      ['Low capacity', 'accent-frozen'],
-    ],
-  },
+const ARCH_LABELS = {
+  'S1_MobileNet': 'S1',
+  'S2_full': 'S2 BEST',
+  'S3_frozen': 'S3',
+  'S4_reduced': 'S4',
+  'S5_tiny': 'S5',
 };
 
 const ABLATION_SIGNALS = {
@@ -862,15 +752,6 @@ let ASSET_ROOT = 'assets';
 
 function ap(rel) { return `${ASSET_ROOT}/${rel}`; }
 function pp() { return ap(`pairs/${CUR_PAIR.id}`); }
-function renderStudentSummary() {
-  const meta = ARCH_DETAILS[CUR_ARCH] || ARCH_DETAILS.S2_full;
-  document.getElementById('student-summary-name').textContent = meta.name;
-  document.getElementById('student-summary-tag').textContent = meta.tag;
-  document.getElementById('student-summary-desc').textContent = meta.desc;
-  const chips = document.getElementById('student-summary-chips');
-  chips.innerHTML = meta.chips.map(([label, cls]) => `<span class="meta-chip ${cls}">${label}</span>`).join('');
-}
-
 function renderAblationSignals() {
   const state = ABLATION_SIGNALS[CUR_ABL] || ABLATION_SIGNALS.B;
   document.querySelector('#ablation-signals .ablation-signal-row.best').querySelectorAll('.ablation-signal').forEach(el => {
@@ -915,12 +796,11 @@ function refreshToolState() {
 function refresh() {
   if (!CUR_PAIR) return;
   const base = pp();
-  const studentLabel = (ARCH_DETAILS[CUR_ARCH] || ARCH_DETAILS.S2_full).name;
+  const studentLabel = ARCH_LABELS[CUR_ARCH] || 'Student';
   const studentFile = ARCH_META[CUR_ARCH].file;
   const compareTitle = CUR_MODE === 'depth' ? 'Depth map' : CUR_MODE === 'slope' ? 'Slope map' : 'Point Cloud';
   document.getElementById('viz-title').textContent = compareTitle;
   document.getElementById('viz-panel-note').innerHTML = `S2 BEST = <strong>154.9M</strong> parameters versus <strong>688.6M</strong> for Teacher = MASt3R. Selected pair: <strong>${CUR_PAIR.name}</strong>.`;
-  renderStudentSummary();
   if (CUR_MODE === 'ply') {
     document.getElementById('viz-image-mode').classList.remove('active');
     document.getElementById('viz-ply-mode').classList.add('active');
