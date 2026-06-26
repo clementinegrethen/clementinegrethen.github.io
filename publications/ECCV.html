@@ -62,6 +62,10 @@ h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; line-height: 1.25; max
 .link-btn.outline { background: white; color: var(--text); border: 1px solid var(--border); }
 .link-btn.outline:hover { background: var(--bg-soft); border-color: var(--text); }
 
+.quick-links { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.quick-link { display: inline-flex; align-items: center; padding: 7px 12px; border: 1px solid var(--border); border-radius: 999px; background: white; color: var(--text-2); text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.15s ease; }
+.quick-link:hover { color: var(--text); border-color: var(--accent-2); box-shadow: 0 2px 10px rgba(30, 77, 139, 0.08); }
+
 section { padding: 40px 0; border-top: 1px solid var(--border); }
 section:first-of-type { border-top: none; }
 
@@ -219,13 +223,21 @@ footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: cente
     <a class="link-btn outline" href="#bibtex">BibTeX</a>
   </div>
 
+  <div class="quick-links">
+    <a class="quick-link" href="#pairs">Images</a>
+    <a class="quick-link" href="#student-teacher">Sliders</a>
+    <a class="quick-link" href="#arch3d">3D</a>
+    <a class="quick-link" href="#extension">Extensions</a>
+    <a class="quick-link" href="#bibtex">Citation</a>
+  </div>
+
   <div class="teaser-pair">
     <figure><img id="hero-im1" src="" alt=""><figcaption id="hero-cap1"></figcaption></figure>
     <figure><img id="hero-im2" src="" alt=""><figcaption id="hero-cap2"></figcaption></figure>
   </div>
 </header>
 <!-- SECTION ABSTRACT -->
-<section>
+<section id="pairs">
   <div class="abstract-box">
     <h2>Abstract</h2>
     <p>Large geometric foundation models (e.g.&nbsp;MASt3R, 688.6M parameters) achieve state-of-the-art 3D reconstruction from stereo pairs but are prohibitive to deploy on resource-constrained platforms — particularly relevant for lunar space missions. We propose a distillation framework combining (i)&nbsp;<strong>SVD-based decoder initialization</strong> from the teacher (Eckart–Young optimal), (ii)&nbsp;a <strong>feature-alignment loss</strong> at intermediate ViT layers, and (iii)&nbsp;<strong>full encoder fine-tuning</strong>.</p>
@@ -242,7 +254,7 @@ footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: cente
 
 
 <!-- STUDENT vs TEACHER -->
-<section>
+<section id="student-teacher">
   <h2>Student vs Teacher</h2>
   <div class="section-intro-text" style="margin-top: 12px;">
     <p>Compare each student to the Teacher (688.6M ViT-Large) on both views of the stereo pair. The slider lets you reveal the student's prediction over the Teacher's.</p>
@@ -305,7 +317,7 @@ footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: cente
 </section>
 
 <!-- 3D STUDENT vs TEACHER -->
-<section>
+<section id="arch3d">
   <h2>3D point cloud — Student vs Teacher</h2>
   <div class="section-intro-text" style="margin-top: 12px;">
     <p>Side-by-side comparison of the reconstructed 3D point clouds. Drag either viewer to rotate both — rotations are synchronized. The cloud is textured with RGB sampled from the input image.</p>
@@ -403,7 +415,7 @@ footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: cente
 </section>
 
 <!-- EXTENSION WORK -->
-<section>
+<section id="extension">
   <h2>Extension to other domains</h2>
   <div class="section-intro-text" style="margin-top: 12px;">
     <p>While the main paper focuses on lunar imagery, our framework transfers to general-purpose datasets without architectural changes — we distill the publicly released <strong>MASt3R</strong> checkpoint (no domain adaptation) and apply the same recipe.</p>
@@ -596,6 +608,87 @@ const ARCH_META = {
   'S4_reduced':    { name: 'S4 — ViT-S with reduced decoder', params: '94.9M', file: 'S4_reduced', details: ['DINOv2 ViT-S/14 encoder','Reduced 256-d / 4-layer decoder'] },
   'S5_tiny':       { name: 'S5 — ViT-Tiny + full decoder', params: '138.5M', file: 'S5_tiny', details: ['ViT-Tiny encoder','Full 512-d / 6-layer decoder'] },
 };
+
+/* ============= State + refresh ============= */
+let MANIFEST = []; let CUR_PAIR = null; let CUR_ARCH = 'S2_full'; let CUR_ABL = 'B';
+function pp() { return `assets/pairs/${CUR_PAIR.id}`; }
+function refreshArchInfo() {
+  const m = ARCH_META[CUR_ARCH];
+  document.getElementById('arch-info').innerHTML = `<strong>${m.name}</strong> · ${m.params} params <ul>` + m.details.map(d => `<li>${d}</li>`).join('') + `</ul>`;
+  document.getElementById('ply-student-name').textContent = `· ${m.name.split('—')[0].trim()}`;
+}
+function refresh() {
+  if (!CUR_PAIR) return;
+  const base = pp();
+  // Hero
+  document.getElementById('hero-im1').src = `${base}/im1.jpg`;
+  document.getElementById('hero-im2').src = `${base}/im2.jpg`;
+  document.getElementById('hero-cap1').textContent = `Left · im_${CUR_PAIR.im1}`;
+  document.getElementById('hero-cap2').textContent = `Right · im_${CUR_PAIR.im2}`;
+  // Student vs Teacher (2 views × depth+slope)
+  const arch_file = ARCH_META[CUR_ARCH].file;
+  for (const v of ['1','2']) {
+    const vi = (parseInt(v)-1).toString();
+    document.getElementById(`v${v}-depth-base`).src    = `${base}/depth_v${vi}/Teacher.png`;
+    document.getElementById(`v${v}-depth-overlay`).src = `${base}/depth_v${vi}/${arch_file}.png`;
+    document.getElementById(`v${v}-slope-base`).src    = `${base}/slope_v${vi}/Teacher.png`;
+    document.getElementById(`v${v}-slope-overlay`).src = `${base}/slope_v${vi}/${arch_file}.png`;
+    document.getElementById(`v${v}-depth-right`).textContent = ARCH_META[CUR_ARCH].name.split('—')[0].trim();
+    document.getElementById(`v${v}-slope-right`).textContent = ARCH_META[CUR_ARCH].name.split('—')[0].trim();
+  }
+  // 3D PLY
+  archScene_student.load(`${base}/ply/${arch_file}.ply`);
+  archScene_teacher.load(`${base}/ply/Teacher.ply`);
+  // Ablation tri-compare (A | selected | Teacher)
+  for (const v of ['1','2']) {
+    const vi = (parseInt(v)-1).toString();
+    document.getElementById(`abl-v${v}-depth-A`).src = `${base}/abl_depth_v${vi}/A.png`;
+    document.getElementById(`abl-v${v}-depth-X`).src = `${base}/abl_depth_v${vi}/${CUR_ABL}.png`;
+    document.getElementById(`abl-v${v}-depth-T`).src = `${base}/depth_v${vi}/Teacher.png`;
+    document.getElementById(`abl-v${v}-slope-A`).src = `${base}/abl_slope_v${vi}/A.png`;
+    document.getElementById(`abl-v${v}-slope-X`).src = `${base}/abl_slope_v${vi}/${CUR_ABL}.png`;
+    document.getElementById(`abl-v${v}-slope-T`).src = `${base}/slope_v${vi}/Teacher.png`;
+    document.getElementById(`abl-v${v}-depth-mid`).textContent = ABL_LABELS[CUR_ABL];
+    document.getElementById(`abl-v${v}-slope-mid`).textContent = ABL_LABELS[CUR_ABL];
+  }
+  refreshArchInfo();
+}
+
+fetch('assets/pairs/manifest.json').then(r => r.json()).then(data => {
+  MANIFEST = data;
+  const picker = document.getElementById('pair-picker');
+  picker.innerHTML = '';
+  data.forEach((p, i) => {
+    const div = document.createElement('button');
+    div.className = 'pair-thumb' + (i === 0 ? ' active' : '');
+    div.dataset.key = p.id;
+    div.innerHTML = `
+      <div class="pair-thumb-imgs">
+        <img src="assets/pairs/${p.id}/im1.jpg" alt="">
+        <img src="assets/pairs/${p.id}/im2.jpg" alt="">
+      </div>
+      <div class="pair-thumb-name">${p.name}</div>
+      <div class="pair-thumb-detail">${p.detail}</div>
+    `;
+    div.addEventListener('click', () => {
+      CUR_PAIR = p;
+      document.querySelectorAll('.pair-thumb').forEach(b => b.classList.toggle('active', b.dataset.key === p.id));
+      refresh();
+    });
+    picker.appendChild(div);
+  });
+  document.querySelectorAll('.arch-btn').forEach(b => b.addEventListener('click', () => {
+    CUR_ARCH = b.dataset.key;
+    document.querySelectorAll('.arch-btn').forEach(x => x.classList.toggle('active', x.dataset.key === CUR_ARCH));
+    refresh();
+  }));
+  document.querySelectorAll('.abl-btn').forEach(b => b.addEventListener('click', () => {
+    CUR_ABL = b.dataset.key;
+    document.querySelectorAll('.abl-btn').forEach(x => x.classList.toggle('active', x.dataset.key === CUR_ABL));
+    refresh();
+  }));
+  CUR_PAIR = data[0]; refresh();
+});
 </script>
 </body>
 </html>
