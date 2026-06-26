@@ -27,18 +27,24 @@ body {
   background: var(--bg); 
   color: var(--text); 
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-  font-size: 18.5px; 
+  font-size: 17px; /* Légèrement ajusté pour un look plus "papier académique" */
   line-height: 1.6; 
   -webkit-font-smoothing: antialiased; 
 }
 
-.container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
-header { padding: 60px 0 30px; text-align: center; }
-.venue { font-size: 1.5em; font-weight: bold; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 18px; text-align: center; }
-h1 { font-size: clamp(26px, 4.6vw, 40px); font-weight: 700; line-height: 1.25; max-width: 880px; margin: 0 auto 28px; letter-spacing: -0.01em; text-align: center; }
+/* Ajustement des marges globales comme sur le site de Robin */
+.container { 
+  max-width: 840px; /* Aligne parfaitement le contenu de manière centrale */
+  margin: 0 auto; 
+  padding: 0 20px; 
+}
 
-/* --- Bloc des Auteurs (Liens colorés et cliquables) --- */
-.authors { font-size: 22px; margin: 22px 0 8px; line-height: 1.6; text-align: center; }
+header { padding: 60px 0 30px; text-align: center; }
+.venue { font-size: 1.3em; font-weight: 600; color: var(--accent); letter-spacing: 0.02em; margin-bottom: 18px; text-align: center; }
+h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; line-height: 1.25; max-width: 100%; margin: 0 auto 24px; letter-spacing: -0.01em; text-align: center; }
+
+/* --- Bloc des Auteurs --- */
+.authors { font-size: 20px; margin: 20px 0 8px; line-height: 1.6; text-align: center; }
 .authors a { 
   color: var(--accent); 
   text-decoration: underline; 
@@ -47,38 +53,47 @@ h1 { font-size: clamp(26px, 4.6vw, 40px); font-weight: 700; line-height: 1.25; m
 }
 .authors a:hover { color: var(--link-h); text-decoration: none; }
 .authors sup { font-size: 11px; color: var(--text-3); margin: 0 1px; }
-.affil { font-size: 16px; color: var(--text-3); margin-top: 6px; text-align: center; }
+.affil { font-size: 15px; color: var(--text-3); margin-top: 6px; text-align: center; }
 
-.author-note { margin: 18px auto 0; max-width: 720px; font-size: 14px; color: var(--accent-2); padding: 10px 16px; background: #eef4fb; border: 1px solid #c7d6e8; border-radius: 6px; font-style: italic; text-align: center; }
+.author-note { margin: 20px auto 0; max-width: 100%; font-size: 14px; color: var(--text-2); padding: 12px 18px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; font-style: italic; text-align: justify; }
 .links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .link-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--text); color: white; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 14px; transition: background 0.18s; }
 .link-btn:hover { background: var(--link-h); }
 .link-btn.outline { background: white; color: var(--text); border: 1px solid var(--border); }
 .link-btn.outline:hover { background: var(--bg-soft); border-color: var(--text); }
 
-section { padding: 50px 0; border-top: 1px solid var(--border); }
+section { padding: 40px 0; border-top: 1px solid var(--border); }
 section:first-of-type { border-top: none; }
 
-/* --- Alignement des titres de sections --- */
-h2 { font-size: 28px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.01em; text-align: left; color: var(--text); }
-h3 { font-size: 20px; font-weight: 600; margin: 28px 0 12px; color: var(--text); text-align: left; }
-p { color: var(--text-2); margin-bottom: 14px; max-width: 880px; text-align: left; }
+/* --- Alignement des paragraphes et titres --- */
+h2 { font-size: 24px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.01em; text-align: left; color: var(--text); }
+h3 { font-size: 18px; font-weight: 600; margin: 24px 0 12px; color: var(--text); text-align: left; }
+p { color: var(--text-2); margin-bottom: 14px; width: 100%; text-align: justify; }
 p strong { color: var(--text); }
 
-/* --- Style de l'Abstract --- */
-.abstract p { 
+/* --- Style Spécifique de l'Abstract --- */
+.abstract-box {
+  max-width: 720px; /* Plus serré pour l'abstract, comme dans les vrais papiers */
+  margin: 0 auto;
+}
+.abstract-box h2 {
+  text-align: center; /* Titre de l'abstract centré */
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+.abstract-box p { 
   text-align: justify; 
-  max-width: none; 
-  font-size: 18.5px; 
-  line-height: 1.5; 
+  font-size: 16.5px; 
+  line-height: 1.6; 
 }
 
-.teaser-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 600px; margin: 36px auto 6px; }
+/* Figures et images */
+.teaser-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 100%; margin: 36px auto 6px; }
 .teaser-pair figure { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .teaser-pair figure img { width: 100%; display: block; }
 .teaser-pair figcaption { padding: 6px 10px; font-size: 12px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; text-align: center; }
 
-/* Pair picker — thumbnails */
+/* Thumbnails et listes */
 .pair-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 16px; }
 .pair-thumb { background: var(--bg-card); border: 2px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.18s; padding: 0; font: inherit; text-align: left; }
 .pair-thumb:hover { border-color: var(--accent-2); transform: translateY(-3px); }
@@ -87,7 +102,6 @@ p strong { color: var(--text); }
 .pair-thumb .pair-thumb-imgs img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 .pair-thumb .pair-thumb-name { padding: 6px 10px; font-size: 12px; font-weight: 600; color: var(--text); border-top: 1px solid var(--border); }
 .pair-thumb .pair-thumb-detail { padding: 0 10px 6px; font-size: 11px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
-.pair-thumb.active .pair-thumb-name { color: var(--accent); }
 
 /* Selector chips */
 .selector-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; padding: 14px 16px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; }
@@ -96,9 +110,6 @@ p strong { color: var(--text); }
 .chip:hover { color: var(--text); border-color: var(--text-3); }
 .chip.active { background: var(--text); color: white; border-color: var(--text); }
 .chip .meta { font-size: 11px; color: var(--text-3); margin-left: 4px; }
-.chip.active .meta { color: rgba(255,255,255,0.7); }
-.chip.best { border-color: var(--good); }
-.chip.best.active { background: var(--good); border-color: var(--good); }
 
 .arch-info { padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 18px; font-size: 14px; color: var(--text-2); text-align: left; }
 .arch-info strong { color: var(--text); }
@@ -120,7 +131,6 @@ p strong { color: var(--text); }
 .compare-label.center { left: 50%; transform: translateX(-50%); }
 
 .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 16px 0; }
-.cmp-grid > div { margin: 0; }
 .cmp-title { font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; }
 .view-block { margin-top: 22px; }
 .view-block .view-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 10px; text-align: left; }
@@ -137,37 +147,33 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px sol
 th, td { padding: 10px 14px; text-align: center; border-bottom: 1px solid var(--border); }
 th { background: var(--bg-soft); font-weight: 600; }
 td:first-child, th:first-child { text-align: left; font-weight: 500; }
-.tbl-best { color: var(--good); font-weight: 700; }
-.tbl-teacher { background: #fffaf0; color: var(--accent-2); font-style: italic; }
 
 .bibtex { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 6px; padding: 18px 22px; color: var(--text); white-space: pre-wrap; overflow-x: auto; text-align: left; }
 .bibtex .k { color: var(--link); }
 
-/* --- Elegant Acknowledgements Box --- */
+/* --- Elegant Acknowledgements --- */
 .acknowledgment-section {
   background: var(--bg-soft);
   border-left: 4px solid var(--accent-2);
   border-radius: 4px;
-  padding: 24px 28px;
+  padding: 20px 24px;
   margin: 40px 0;
 }
 .acknowledgment-section h2 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 .acknowledgment-section p {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14.5px;
   color: var(--text-2);
   margin-bottom: 0;
-  text-align: justify;
 }
 
-footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-3); font-size: 13px; }
+footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-3); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -209,8 +215,8 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: cente
 </section>
 
 <section>
-  <h2>Abstract</h2>
-  <div class="abstract">
+  <div class="abstract-box">
+    <h2>Abstract</h2>
     <p>Large geometric foundation models (e.g.&nbsp;MASt3R, 688.6M parameters) achieve state-of-the-art 3D reconstruction from stereo pairs but are prohibitive to deploy on resource-constrained platforms — particularly relevant for lunar space missions. We propose a distillation framework combining (i)&nbsp;<strong>SVD-based decoder initialization</strong> from the teacher (Eckart–Young optimal), (ii)&nbsp;a <strong>feature-alignment loss</strong> at intermediate ViT layers, and (iii)&nbsp;<strong>full encoder fine-tuning</strong>.</p>
   </div>
 </section>
@@ -456,8 +462,8 @@ function setupTriSlider(stageId, h1Id, h2Id) {
   const stage = document.getElementById(stageId);
   const h1 = document.getElementById(h1Id);
   const h2 = document.getElementById(h2Id);
-  const overlay  = stage.querySelector('.overlay');   // middle layer
-  const overlay2 = stage.querySelector('.overlay2');  // right layer
+  const overlay  = stage.querySelector('.overlay');
+  const overlay2 = stage.querySelector('.overlay2');
   let drag = null;
   function update() {
     const p1 = parseFloat(h1.style.left) || 33.33;
@@ -513,10 +519,9 @@ class PLYScene {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true; this.controls.autoRotate = true; this.controls.autoRotateSpeed = 0.4;
     this.points = null; this.loader = new PLYLoader();
-    this.peer = null;  // synced PLYScene
+    this.peer = null;
     new ResizeObserver(() => this.onResize()).observe(container);
     this.loop();
-    // Sync rotation/zoom to peer
     this.controls.addEventListener('start', () => { if (this.peer) this.peer.controls.autoRotate = false; this.controls.autoRotate = false; });
     this.controls.addEventListener('change', () => { if (this.peer) { this.peer.camera.position.copy(this.camera.position); this.peer.camera.quaternion.copy(this.camera.quaternion); this.peer.controls.target.copy(this.controls.target); } });
   }
@@ -539,28 +544,13 @@ const archScene_teacher = new PLYScene(document.getElementById('arch-ply-teacher
 archScene_student.setPeer(archScene_teacher);
 archScene_teacher.setPeer(archScene_student);
 
-/* ============= Architecture metadata ============= */
 const ARCH_META = {
-  'S1_MobileNet':  { name: 'S1 — MobileNetV3', params: '135.7M', file: 'S1_MobileNet',
-    details: ['CNN encoder (MobileNetV3-Large)','Full 512-d / 6-layer decoder','ImageNet pretraining'] },
-  'S2_full':       { name: 'S2 — DINOv2 ViT-S/14 ★ BEST', params: '154.9M', file: 'S2_full',
-    details: ['DINOv2 ViT-S/14 encoder (22M)','Full 512-d / 6-layer / 4-head decoder','SVD-init from teacher + L_feat'] },
-  'S3_frozen':     { name: 'S3 — ViT-S/14 (frozen encoder)', params: '154.9M', file: 'S3_frozen',
-    details: ['DINOv2 ViT-S/14 frozen during training','Full decoder, only decoder is trained','Tests whether encoder adaptation matters'] },
-  'S4_reduced':    { name: 'S4 — ViT-S with reduced decoder', params: '94.9M', file: 'S4_reduced',
-    details: ['DINOv2 ViT-S/14 encoder','Reduced 256-d / 4-layer decoder','7.3× smaller than teacher'] },
-  'S5_tiny':       { name: 'S5 — ViT-Tiny + full decoder', params: '138.5M', file: 'S5_tiny',
-    details: ['timm vit_tiny_patch16_224 encoder','Full 512-d / 6-layer decoder','Lightweight self-attention'] },
+  'S1_MobileNet':  { name: 'S1 — MobileNetV3', params: '135.7M', file: 'S1_MobileNet', details: ['CNN encoder (MobileNetV3-Large)','Full 512-d / 6-layer decoder'] },
+  'S2_full':       { name: 'S2 — DINOv2 ViT-S/14 ★ BEST', params: '154.9M', file: 'S2_full', details: ['DINOv2 ViT-S/14 encoder','Full 512-d / 6-layer decoder'] },
+  'S3_frozen':     { name: 'S3 — ViT-S/14 (frozen encoder)', params: '154.9M', file: 'S3_frozen', details: ['DINOv2 ViT-S/14 frozen','Full decoder trained'] },
+  'S4_reduced':    { name: 'S4 — ViT-S with reduced decoder', params: '94.9M', file: 'S4_reduced', details: ['DINOv2 ViT-S/14 encoder','Reduced 256-d / 4-layer decoder'] },
+  'S5_tiny':       { name: 'S5 — ViT-Tiny + full decoder', params: '138.5M', file: 'S5_tiny', details: ['ViT-Tiny encoder','Full 512-d / 6-layer decoder'] },
 };
-const ABL_LABELS = { 'B':'B — no SVD', 'C':'C — frozen encoder', 'D':'D — no feature loss', 'E':'E — GT supervision' };
-
-/* ============= State + refresh ============= */
-let MANIFEST = []; let CUR_PAIR = null; let CUR_ARCH = 'S2_full'; let CUR_ABL = 'B';
-function pp() { return `assets/pairs/${CUR_PAIR.id}`; }
-function refreshArchInfo() {
-  const m = ARCH_META[CUR_ARCH];
-  document.getElementById('arch-info').innerHTML = `<strong>${m.name}</strong> · ${m.params} params <ul>` + m.details.map(d => `<li>${d}</li>`).join('') + `</ul>`;
-}
 </script>
 </body>
 </html>
