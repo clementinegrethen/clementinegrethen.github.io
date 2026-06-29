@@ -141,21 +141,22 @@ p strong { color: var(--text); }
 .viz-toolbar {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   align-items: stretch;
   margin-bottom: 16px;
 }
 .viz-group {
   display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
 }
 .viz-group.student-group {
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .viz-panel-note {
   margin: 10px auto 18px;
@@ -408,6 +409,7 @@ p strong { color: var(--text); }
 .ply-wrap { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
 .ply-stage { width: 100%; aspect-ratio: 16/9; background: linear-gradient(180deg, #f8f8f8 0%, #ececec 100%); border-radius: 6px; position: relative; }
 .ply-stage::after { content: 'drag to rotate · scroll to zoom'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--text-3); pointer-events: none; background: rgba(255,255,255,0.7); padding: 3px 8px; border-radius: 3px; }
+.ply-error { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 12px; color: #b91c1c; text-align: center; padding: 8px 14px; background: rgba(255,255,255,0.85); border-radius: 6px; max-width: 90%; display: none; }
 
 /* Tables */
 .tbl-wrap { overflow-x: auto; margin-top: 18px; }
@@ -557,12 +559,12 @@ footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: cente
           <div class="ply-card">
             <div class="ply-card-title" id="viz-ply-student-title">Student</div>
             <div class="ply-card-sub" id="viz-ply-student-sub">Selected architecture</div>
-            <div class="ply-wrap"><div id="viz-ply-student" class="ply-stage"></div></div>
+            <div class="ply-wrap"><div id="viz-ply-student" class="ply-stage"><div class="ply-error" id="viz-ply-student-error"></div></div></div>
           </div>
           <div class="ply-card">
             <div class="ply-card-title">Teacher</div>
             <div class="ply-card-sub">MASt3R · 688.6M</div>
-            <div class="ply-wrap"><div id="viz-ply-teacher" class="ply-stage"></div></div>
+            <div class="ply-wrap"><div id="viz-ply-teacher" class="ply-stage"><div class="ply-error" id="viz-ply-teacher-error"></div></div></div>
           </div>
         </div>
       </div>
@@ -697,8 +699,9 @@ setupSlider('viz-abl-stage', 'viz-abl-handle');
 
 /* ============= 3D Viewer ============= */
 class PLYScene {
-  constructor(container) {
+  constructor(container, errorEl) {
     this.container = container;
+    this.errorEl = errorEl;
     const w = container.clientWidth, h = container.clientHeight;
     this.scene = new THREE.Scene(); this.scene.background = new THREE.Color(0xf0f0f0);
     this.camera = new THREE.PerspectiveCamera(45, w/h, 0.001, 100);
@@ -719,20 +722,35 @@ class PLYScene {
   }
   setPeer(p) { this.peer = p; }
   onResize() { const w = this.container.clientWidth, h = this.container.clientHeight; this.camera.aspect = w/h; this.camera.updateProjectionMatrix(); this.renderer.setSize(w, h); }
+  showError(msg) { if (this.errorEl) { this.errorEl.textContent = msg; this.errorEl.style.display = 'block'; } }
+  clearError() { if (this.errorEl) { this.errorEl.style.display = 'none'; } }
   load(url) {
-    this.loader.load(url, geo => {
-      if (this.points) { this.scene.remove(this.points); this.points.geometry.dispose(); }
-      geo.computeBoundingBox();
-      const c = geo.boundingBox.getCenter(new THREE.Vector3()); geo.translate(-c.x, -c.y, -c.z);
-      const size = geo.boundingBox.getSize(new THREE.Vector3());
-      const scale = Math.max(size.x, size.y, size.z) || 1;
-      geo.scale(1 / scale, 1 / scale, 1 / scale);
-      this.controls.target.set(0, 0, 0);
-      this.camera.position.set(0.72, 0.42, 0.92);
-      this.camera.lookAt(0, 0, 0);
-      const mat = new THREE.PointsMaterial({ vertexColors: geo.attributes.color !== undefined, color: 0x888888, size: 0.015, sizeAttenuation: true });
-      this.points = new THREE.Points(geo, mat); this.scene.add(this.points);
-    });
+    this.clearError();
+    this.loader.load(
+      url,
+      geo => {
+        if (this.points) { this.scene.remove(this.points); this.points.geometry.dispose(); }
+        if (!geo.attributes.position || geo.attributes.position.count === 0) {
+          this.showError(`PLY chargé mais vide (0 point) : ${url}`);
+          return;
+        }
+        geo.computeBoundingBox();
+        const c = geo.boundingBox.getCenter(new THREE.Vector3()); geo.translate(-c.x, -c.y, -c.z);
+        const size = geo.boundingBox.getSize(new THREE.Vector3());
+        const scale = Math.max(size.x, size.y, size.z) || 1;
+        geo.scale(1 / scale, 1 / scale, 1 / scale);
+        this.controls.target.set(0, 0, 0);
+        this.camera.position.set(0.72, 0.42, 0.92);
+        this.camera.lookAt(0, 0, 0);
+        const mat = new THREE.PointsMaterial({ vertexColors: geo.attributes.color !== undefined, color: 0x888888, size: 0.015, sizeAttenuation: true });
+        this.points = new THREE.Points(geo, mat); this.scene.add(this.points);
+      },
+      undefined,
+      err => {
+        console.error('[PLY] échec de chargement:', url, err);
+        this.showError(`Échec du chargement : ${url} (vérifier la console / l'onglet Network)`);
+      }
+    );
   }
   loop() { requestAnimationFrame(() => this.loop()); this.controls.update(); this.renderer.render(this.scene, this.camera); }
 }
@@ -740,8 +758,8 @@ let vizScene = null;
 function ensureVizScene() {
   if (!vizScene) {
     vizScene = {
-      student: new PLYScene(document.getElementById('viz-ply-student')),
-      teacher: new PLYScene(document.getElementById('viz-ply-teacher')),
+      student: new PLYScene(document.getElementById('viz-ply-student'), document.getElementById('viz-ply-student-error')),
+      teacher: new PLYScene(document.getElementById('viz-ply-teacher'), document.getElementById('viz-ply-teacher-error')),
     };
     vizScene.student.setPeer(vizScene.teacher);
     vizScene.teacher.setPeer(vizScene.student);
@@ -839,6 +857,8 @@ function refresh() {
     const scenes = ensureVizScene();
     document.getElementById('viz-ply-student-title').textContent = studentLabel;
     document.getElementById('viz-ply-student-sub').textContent = `Selected architecture · ${studentLabel}`;
+    scenes.student.onResize();
+    scenes.teacher.onResize();
     scenes.student.load(`${base}/ply/${studentFile}.ply`);
     scenes.teacher.load(`${base}/ply/Teacher.ply`);
   } else {
