@@ -301,13 +301,14 @@ p strong { color: var(--text); }
   font-weight: 700;
 }
 .student-line-2 {
-  display: none;
-  font-size: 12px;
+  display: block;
+  font-size: 11px;
   line-height: 1.35;
   color: inherit;
-  opacity: 0.88;
+  opacity: 0.75;
   text-transform: none;
   letter-spacing: 0;
+  margin-top: 3px;
 }
 .param-badge {
   display: inline-flex;
@@ -526,11 +527,11 @@ footer { padding: 30px 0; border-top: 1px solid var(--border); text-align: cente
       </div>
       <div class="viz-group student-group">
         <span class="tool-label">Student architecture</span>
-        <button class="tool-btn secondary student-btn student-card active" data-key="S1_MobileNet"><span class="student-line-1">S1 <span class="param-badge">135.7M</span></span><span class="student-line-2">MobileNetV3-L · 512d/6L</span></button>
-        <button class="tool-btn student-btn student-card best" data-key="S2_full"><span class="student-line-1">S2 BEST <span class="param-badge">154.9M</span></span><span class="student-line-2">DINOv2 ViT-S/14 · 512d/6L</span></button>
-        <button class="tool-btn secondary student-btn student-card" data-key="S3_frozen"><span class="student-line-1">S3 <span class="param-badge">154.9M</span></span><span class="student-line-2">DINOv2 ViT-S/14 frozen · 512d/6L</span></button>
-        <button class="tool-btn secondary student-btn student-card" data-key="S4_reduced"><span class="student-line-1">S4 <span class="param-badge">94.9M</span></span><span class="student-line-2">DINOv2 ViT-S/14 · 256d/4L</span></button>
-        <button class="tool-btn secondary student-btn student-card" data-key="S5_tiny"><span class="student-line-1">S5 <span class="param-badge">138.5M</span></span><span class="student-line-2">ViT-Tiny/16 · 512d/6L</span></button>
+        <button class="tool-btn secondary student-btn student-card active" data-key="S1_MobileNet"><span class="student-line-1">S1 <span class="param-badge">135.7M</span></span><span class="student-line-2">MobileNetV3-L · 512d/6L/4H · CNN, no pretraining</span></button>
+        <button class="tool-btn student-btn student-card best" data-key="S2_full"><span class="student-line-1">S2 BEST <span class="param-badge">154.9M</span></span><span class="student-line-2">DINOv2 ViT-S/14 · 512d/6L/4H · fine-tuned enc.</span></button>
+        <button class="tool-btn secondary student-btn student-card" data-key="S3_frozen"><span class="student-line-1">S3 <span class="param-badge">154.9M</span></span><span class="student-line-2">DINOv2 ViT-S/14 · 512d/6L/4H · frozen enc.</span></button>
+        <button class="tool-btn secondary student-btn student-card" data-key="S4_reduced"><span class="student-line-1">S4 <span class="param-badge">94.9M</span></span><span class="student-line-2">DINOv2 ViT-S/14 · 256d/4L/4H · reduced decoder</span></button>
+        <button class="tool-btn secondary student-btn student-card" data-key="S5_tiny"><span class="student-line-1">S5 <span class="param-badge">138.5M</span></span><span class="student-line-2">ViT-Tiny/16 · 512d/6L/4H · smaller ViT enc.</span></button>
       </div>
       <div class="viz-group">
         <span class="tool-label">Compare order</span>
